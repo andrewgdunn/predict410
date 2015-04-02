@@ -1,6 +1,12 @@
 study
 =====
 
+My study notes will draw heavily from the required texts and multimedia. I will
+also draw from external sources that I find to be adept at explaining a
+particular topic. If something is referenced here, it is because I found it to
+be very useful in understanding a topic.
+
+
 # Standard Mathematical and Statistical Notation
 Notes below are from the following sources; [@bhatti2011].
 
@@ -77,153 +83,197 @@ Let $X$ and $Y$ be random variables with a joint distribution function. (In the 
 
 Here the reader should note that in general $\mathrm{Cov}[aX+b,cY+d] = ac\mathrm{Cov}[X,Y]$. If $X$ and $Y$ are independent random variables, then $\mathrm{Cov}[X,Y] = 0$. The converse of this statement is not true except when both $X$ and $Y$ are normally distributed. In general $\mathrm{Cov}[X,Y] = 0$ does not imply that $X$ and $Y$ are indepdented random variables.
 
+
 # Study Questions for Ordinary Least Squares Regression
 
-When we refer to a 'simple linear regression', to what type of model are we
-referring? How does a 'simple linear regression' differ from a 'multiple
-regression'?
+__Question__: When we refer to a 'simple linear regression', to what type of
+model are we referring? How does a 'simple linear regression' differ from a
+'multiple regression'?
 
-In statistics, and in this course, we use the term 'regression' as a general
-term. What do we mean by the term 'regression'? What is the objective of a
-'regression model'?
+Response from [@montgomery2012introduction] pages 2 and 4.
 
-What do we mean by 'linear regression'? represent a linear regression? Which
-equations represent a linear regression?
+$$ y = \beta_0 + \beta_1x + \varepsilon $$
 
-(a) $Y = b_0 + b_1*X_1$
-(b) $Y = b_0 + b_1*X_1 + b_2*(X_2^2)$
-(c) $Y = b_0 + \exp(b1)*X_1$
+The equation abovce is called a __linear regression model__. Customarily $x$ is
+called the independent variable and $y$ is called the dependent variable.
+However, this often causes confustion with the concept of statistical
+independence, so we refer to $x$ as the __predictor__ or __regressor__and $y$ as
+the __response__ variable. Because the equation above involves only one
+__regressor__ variable, it is called a __simple linear regression model__.
 
-Before building statistical models, it is a common and preferred practice to
-perform an Exploratory Data Analysis (EDA). What constitutes an EDA for a simple
-linear regression model? Is this EDA satisfactory for a multiple regression
-model, or do we need to change or extend the EDA? As we move forward in this
-course we will also learn about logistic regression models and survival
+In general the response variable $y$ may be related to $k$ regressors, $x_1,
+x_2, \ldots, x_k$, so that:
+
+$$ y = \beta_0 + \beta_1x_1 + \beta_2x_2 + \ldots + \beta_kx_x + \varepsilon $$
+
+This is called a __multiple linear regression model__ because more than one
+regressor is involved. The adjetive linear is employed to indicate that the
+model is linear in the parameters $\beta_0, \beta_1, \ldots, \beta_k$, not
+because the $y$ is a linear function of the $x$'s.
+
+__Question__: In statistics, and in this course, we use the term 'regression' as
+a general term. What do we mean by the term 'regression'? What is the objective
+of a 'regression model'?
+
+Response from [@montgomery2012introduction] pages 1.
+
+Regression analysis is a _statistical technique__ for investigating and
+__modeling the relationship between variables__. The goal of regression analysis
+is to determine the values of parameters for a function that causes the function
+to best fit a set of data. Regression analysis helps one understand how the
+typical value of the dependent variable changes when any one of the independent
+variables is varied, while the other independent variables are held fixed
+[@wiki:regressionanalysis].
+
+__Question__: What do we mean by 'linear regression'? represent a linear
+regression? Which equations represent a linear regression?
+
+(a) $y = \beta_0 + \beta_1x_1$
+(b) $y = \beta_0 + \beta_1x_1 + \beta_2x_2^2$
+(c) $y = \beta_0 + \exp(\beta_1)x_1$
+
+Both (a) and (c) are representations of linear regression because they only have
+a single __regressor__. (b), with the presence of $x_2^2$ has two
+__regressors__.
+
+__Question__: Before building statistical models, it is a common and preferred
+practice to perform an Exploratory Data Analysis (EDA). What constitutes an EDA
+for a simple linear regression model? Is this EDA satisfactory for a multiple
+regression model, or do we need to change or extend the EDA? As we move forward
+in this course we will also learn about logistic regression models and survival
 regression models, will these methods need their own EDA or is EDA general to
 all statistical models?
 
-In the simple linear regression model what is the relationship between R-squared
-and the correlation coefficient rho?
+__Question__: In the simple linear regression model what is the relationship
+between R-squared and the correlation coefficient rho?
 
-How do we interpret a regression coefficient in OLS regression?
+__Question__: How do we interpret a regression coefficient in OLS regression?
 
-Frequently, as a form of EDA for OLS regression we make a scatterplot between
-the response variable Y and a predictor variable X. As an assumption of OLS, the
-response variable Y must be continuous. However, the predictor variable X could
-be continuous or discrete. When the predictor variable is discrete, does a
-scatterplot still make sense? If not, what type of visual EDA does make sense?
-Does the appropriateness of the scatterplot make sense if the discrete variable
-takes on many discrete values (such as the set of integers, think of dollar
-amounts rounded to the nearest dollar) versus only a few discrete values(such as
-a coded categorical variable which only takes the values 1, 2, or 3)?
+__Question__: Frequently, as a form of EDA for OLS regression we make a
+scatterplot between the response variable Y and a predictor variable X. As an
+assumption of OLS, the response variable Y must be continuous. However, the
+predictor variable X could be continuous or discrete. When the predictor
+variable is discrete, does a scatterplot still make sense? If not, what type of
+visual EDA does make sense? Does the appropriateness of the scatterplot make
+sense if the discrete variable takes on many discrete values (such as the set of
+integers, think of dollar amounts rounded to the nearest dollar) versus only a
+few discrete values(such as a coded categorical variable which only takes the
+values 1, 2, or 3)?
 
-The simple linear regression model is a special case of 'Multiple Regression' or
-'Ordinary Least Squares'(OLS) regression. (We will typically use the term OLS
-regression.) What are the assumptions of OLS regression? In the final step of a
-regression analysis we perform a 'check of model adequacy'. What model
-diagnostics do we use to validate our fitted model against the model assumptions
-of OLS regression?
+__Question__: The simple linear regression model is a special case of 'Multiple
+Regression' or 'Ordinary Least Squares'(OLS) regression. (We will typically use
+the term OLS regression.) What are the assumptions of OLS regression? In the
+final step of a regression analysis we perform a 'check of model adequacy'. What
+model diagnostics do we use to validate our fitted model against the model
+assumptions of OLS regression?
 
-How are the parameters, i.e. the model coefficients, estimated in OLS
-regression? How does this relate to maximum likelihood estimation? How do you
-show the relationship between OLS regression and maximum likelihood estimation?
+__Question__: How are the parameters, i.e. the model coefficients, estimated in
+OLS regression? How does this relate to maximum likelihood estimation? How do
+you show the relationship between OLS regression and maximum likelihood
+estimation?
 
-What is the overall F-test? What is the null hypothesis and what is the
-alternate hypothesis? The overall F-test is also called the 'test for a
+__Question__: What is the overall F-test? What is the null hypothesis and what
+is the alternate hypothesis? The overall F-test is also called the 'test for a
 regression effect'. Why is it called this?
 
-What is the difference between R-squared and adjusted R-squared? How is each
-measure computed, and which measure should we prefer? How does the
+__Question__: What is the difference between R-squared and adjusted R-squared?
+How is each measure computed, and which measure should we prefer? How does the
 interpretation of R-squared change as we move from the simple linear regression
 model to the multiple regression model?
 
-The simple linear regression model $Y = b_0 + b_1*X_1$ has three parameters. Two of
-the parameters are $b_0$ and $b_1$. What is the third parameter?
+__Question__: The simple linear regression model $Y = b_0 + b_1*X_1$ has three
+parameters. Two of the parameters are $b_0$ and $b_1$. What is the third
+parameter?
 
-What is a sampling distribution? What theoretical distribution do the parameter
-estimates have in OLS regression? What distribution do we use in practice? Why
-do we use a different distribution in practice?
+__Question__: What is a sampling distribution? What theoretical distribution do
+the parameter estimates have in OLS regression? What distribution do we use in
+practice? Why do we use a different distribution in practice?
 
-The final step of a regression analysis is a 'check of model adequacy'. This
-'check of model adequacy' or 'goodness-of-fit' is a very important step in
-regression analysis. Why? Which quantities in the regression output are affected
-when the fitted model deviates from the underlying assumptions of OLS
-regression?
+__Question__: The final step of a regression analysis is a 'check of model
+adequacy'. This 'check of model adequacy' or 'goodness-of-fit' is a very
+important step in regression analysis. Why? Which quantities in the regression
+output are affected when the fitted model deviates from the underlying
+assumptions of OLS regression?
 
-Nested Models: Given two regression models M1 and M2, what does it mean when we
-say that 'M2 nests M1'?
+__Question__: Nested Models: Given two regression models M1 and M2, what does it
+mean when we say that 'M2 nests M1'?
 
-What is the Analysis of Variance Table for a regression model? How do we
-interpret it and what statistical tests and quantities can be computed from it?
+__Question__: What is the Analysis of Variance Table for a regression model? How
+do we interpret it and what statistical tests and quantities can be computed
+from it?
 
-When the intercept is excluded in a regression model, how does the computation
-and the interpretation of R-squared change? Fit a no intercept model in SAS and
-check the SAS output for any noted differences.
+__Question__: When the intercept is excluded in a regression model, how does the
+computation and the interpretation of R-squared change? Fit a no intercept model
+in SAS and check the SAS output for any noted differences.
 
-How do we interpret the diagnostic plots output by the PLOTS(ONLY)=(DIAGNOSTICS)
-option in PROC REG in SAS?
+__Question__: How do we interpret the diagnostic plots output by the
+PLOTS(ONLY)=(DIAGNOSTICS) option in PROC REG in SAS?
 
-Why do we plot each predictor variable against the residual as a model
-diagnostic?
+__Question__: Why do we plot each predictor variable against the residual as a
+model diagnostic?
 
-Why do we perform transformations in the construction of regression models? Name
-at least two reasons.
+__Question__: Why do we perform transformations in the construction of
+regression models? Name at least two reasons.
 
-What is multicollinearity and how does it affect the parameter estimates in OLS
-regression? How do we diagnose multicollinearity?
+__Question__: What is multicollinearity and how does it affect the parameter
+estimates in OLS regression? How do we diagnose multicollinearity?
 
-What is a Variance Inflation Factor (VIF) and how does it relate to
-multicollinearity?
+__Question__: What is a Variance Inflation Factor (VIF) and how does it relate
+to multicollinearity?
 
-Given a set of predictor variables $X_1,\ldots, X_n$, which are determined to show a
-high degree of multicollinearity between some of the variables, how should we
-choose a subset of these predictor variables to reduce the degree of
-multicollinearity and improve our OLS regression performance?
+__Question__: Given a set of predictor variables $X_1,\ldots, X_n$, which are
+determined to show a high degree of multicollinearity between some of the
+variables, how should we choose a subset of these predictor variables to reduce
+the degree of multicollinearity and improve our OLS regression performance?
 
-Variable Selection: How does forward variable selection work? How does backward
-variable selection work? How does stepwise variable selection work?
+__Question__: Variable Selection: How does forward variable selection work? How
+does backward variable selection work? How does stepwise variable selection
+work?
 
 # Study Questions for Multivariate Analysis
 
 ## Principle Components Analysis
 
-Principal Components Analysis (PCA): What is principal components analysis? How
-does PCA eliminate the problem of multicollinearity? What does it mean for X1
-and X2 to be orthogonal? In order to better understand orthogonality, take the
-building prices data set and perform these steps:
+__Question__: Principal Components Analysis (PCA): What is principal components
+analysis? How does PCA eliminate the problem of multicollinearity? What does it
+mean for X1 and X2 to be orthogonal? In order to better understand
+orthogonality, take the building prices data set and perform these steps:
 
 (a) Perform a PROC CORR on X1-X9.
 (b) Create nine orthogonal predictor variables using PCA. Call
 these variables Z1-Z9.
 (c) Perform a PROC CORR on Z1-Z9.
 
-Principal Components Analysis is described as a method of
-'dimension reduction'. How does PCA reduce the dimension of a
-statistical problem? How do you select the reduced dimension for
-your problem.
+__Question__: Principal Components Analysis is described as a method of
+'dimension reduction'. How does PCA reduce the dimension of a statistical
+problem? How do you select the reduced dimension for your problem.
 
 ## Factor Analysis
 
-Are the factor scores always orthogonal? Are they orthogonal after a rotation?
+__Question__: Are the factor scores always orthogonal? Are they orthogonal after
+a rotation?
 
-If two analysts perform a factor analysis, are they likely to arrive at the same
-result? If the same two analysts perform a principal components analysis, are
-they likely to get the same result?
+__Question__: If two analysts perform a factor analysis, are they likely to
+arrive at the same result? If the same two analysts perform a principal
+components analysis, are they likely to get the same result?
 
-What is the first step in performing a factor analysis?
+__Question__: What is the first step in performing a factor analysis?
 
-In the context of factor analysis, what is the communality of factors?
+__Question__: In the context of factor analysis, what is the communality of
+factors?
 
 ## Cluster Analysis
 
-What is the difference between hierarchical and non-hierarchical clustering?
+__Question__: What is the difference between hierarchical and non-hierarchical
+clustering?
 
-What is linkage? What types of linkage are there?
+__Question__: What is linkage? What types of linkage are there?
 
-How do we examine the goodness-of-fit of a cluster analysis or two comparative
-cluster analyses?
+__Question__: How do we examine the goodness-of-fit of a cluster analysis or two
+comparative cluster analyses?
 
-Do the data need to be treated before we perform a cluster analysis?
+__Question__: Do the data need to be treated before we perform a cluster
+analysis?
 
 \newpage
 # References
