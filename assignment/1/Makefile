@@ -1,11 +1,11 @@
 assignment: assignment1.md assignment1.bib Makefile
 	pandoc assignment1.md \
-	--output assignment1.pdf \
+	--output Assignment1_Dunn.pdf \
 	--smart \
 	--bibliography=assignment1.bib \
-	--csl=../..//templates/acm-siggraph.csl \
-	--template=../..//templates/compact.latex \
-	-V geometry:margin=0.7in,nohead,nofoot
+	--csl=../../templates/ieee-with-url.csl \
+	--template=../../templates/compact.latex \
+	-V geometry:margin=1in
 
 clean:
 	rm assignment1.pdf

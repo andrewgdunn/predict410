@@ -5,6 +5,7 @@
 % Need the section headings to have less vertical spacing:
 % \usepackage[compact]{titlesec}
 % adapted from: http://www.terminally-incoherent.com/blog/2007/09/19/latex-squeezing-the-vertical-white-space/
+%
 \documentclass[$if(fontsize)$$fontsize$,$endif$$if(lang)$$lang$,$endif$$if(papersize)$$papersize$,$endif$$for(classoption)$$classoption$$sep$,$endfor$]{$documentclass$}
 $if(fontfamily)$
 \usepackage{$fontfamily$}
