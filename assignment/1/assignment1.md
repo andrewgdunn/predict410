@@ -251,6 +251,35 @@ proc sgscatter data=ames;
 
 ![Five variables with LOESS Overlay](images/5varwloess.png "Five variables with LOESS Overlay")
 
+# Investigate Potential Categorical Predictor Variables, with respect to Sales Price
+
+We run the Pearson correlation on the categorical variables from the data set.
+Using the data dictionary and the contents procedure we will initially limit the
+categorical variables that we're looking at (to exclude arbitrary identifiers,
+nominal with less than 10 options, and ):
+
+    SubClass Zoning Street Alley LotShape LandContour Utilities LotConfig
+    LandSlope Neighborhood
+
+~~~{.fortran}
+proc corr data=ames nosimple rank;
+   var MasVnrArea BsmtFinSF1 BsmtUnfSF TotalBsmtSF FirstFlrSF GrLivArea GarageArea;
+   with SalePrice;
+~~~
+
+We get results for the variables as follows:
+
+| Variable  | Pearson Correlation Coefficients  | Prob > $|r|$ under $H_0$: $\rho$=0 | Number of Observations |
+|:-:|:-:|:-:|:-:|
+| GrLivArea | 0.70678 | <.0001 | 2930 |
+| GarageArea | 0.64040 | <.0001 | 2929 |
+| TotalBsmtSF | 0.63228 | <.0001 | 2929 |
+| FirstFlrSF | 0.62168 | <.0001 | 2930 |
+| MasVnrArea | 0.50828 | <.0001 | 2907 |
+| BsmtFinSF1 | 0.43291 | <.0001 | 2929 |
+| BsmtUnfSF | 0.18286 | <.0001 | 2929 |
+
+
 # Conclusion / Reflection
 
 The Exploratory Data Analysis that we've done indicates that there are some

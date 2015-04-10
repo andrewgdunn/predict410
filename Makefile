@@ -5,7 +5,7 @@ study: study.md study.bib Makefile
 	--bibliography=study.bib \
 	--csl=templates/acm-siggraph.csl \
 	--template=templates/compact.latex \
-	-V geometry:margin=0.7in,nohead,nofoot
+	-V geometry:margin=0.7in
 
 clean:
 	rm study.pdf

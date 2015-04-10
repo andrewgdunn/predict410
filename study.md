@@ -1,4 +1,4 @@
-study
+Study
 =====
 
 My study notes will draw heavily from the required texts and multimedia. I will
@@ -6,9 +6,8 @@ also draw from external sources that I find to be adept at explaining a
 particular topic. If something is referenced here, it is because I found it to
 be very useful in understanding a topic.
 
-
 # Standard Mathematical and Statistical Notation
-Notes below are from the following sources; [@bhatti2011].
+Notes below are from the following sources; [@bhattiprelim].
 
 ## Vector and Matrix Notation
 
@@ -83,6 +82,175 @@ Let $X$ and $Y$ be random variables with a joint distribution function. (In the 
 
 Here the reader should note that in general $\mathrm{Cov}[aX+b,cY+d] = ac\mathrm{Cov}[X,Y]$. If $X$ and $Y$ are independent random variables, then $\mathrm{Cov}[X,Y] = 0$. The converse of this statement is not true except when both $X$ and $Y$ are normally distributed. In general $\mathrm{Cov}[X,Y] = 0$ does not imply that $X$ and $Y$ are indepdented random variables.
 
+\newpage
+
+# Statistical Assumptions for Ordinary Least Squares Regression
+Notes below are from the following sources; [@bhattiolsassums].
+
+ - In Ordinary Lease Squares (OLS) regression we wish to model a continuous random variable $Y$ (the response variable) given a set of _predictor variables_ $X_1, X_2, \ldots, X_k$.
+
+ - While we require that the response variable $Y$ will be continuous, or approximately continuous. The _predictor variables_ $X_1, X_2, \ldots, X_k$ can be either continuous or discrete.
+
+ - It is fairly standard notation to reserve $k$ for the number of predictor variables in the regression model, and $p$ for the number of parameters (regression coefficients or $\beta$s).
+
+ - When formulating a regression model, we want to explain the variation in the response variable by the variation in the predictor variable.
+
+## Statistical Assumptions for OLS Regression
+
+There are two primary assumptions for OLS regression:
+
+1. The regression model can be expressed in the form $$Y = \beta_0 + \beta_1X_1 + \ldots + \beta_kX_k + \epsilon$$ Notice that the model formulation specifies error term $\epsilon$ to be additive, and that the model parameters ($\beta$s) enter the modeling linearly, that is, $\beta_i$ represents the change in $Y$ for a one unit increase in $X_i$ when $X_i$ is a continuous predictor variable. Any statistical model in which the parameters enter the model linearly is referred to as a _linear model_.
+
+2. The response variable $Y$ is assumed to come from an independent and identically distributed (iid) random sample from a $N(\mathbf{X\beta},\sigma^2)$ distribution where the variance of $\sigma^2$ is a fixed but unkown quantity. The statistical notation for this assumption is $Y ~ N(\mathbf{X\beta},\sigma^2)$.
+
+## Linear Versus Nonlinear Regression
+
+Remember that a _linear model_ is linear in the parameters, not the predictor variables.
+
+ - The following regression models are all linear regression models: $$Y = \beta_0 + \beta_1X_1+\beta_2X_1^2 + \epsilon$$ $$Y = \beta_0 \beta_1\ln(X_1) + \epsilon$$
+
+ - The following regression models are all nonlinear regression models: $$Y = \beta_0\exp(\beta_1X_1) + \epsilon$$ $$Y = \beta_0 + \beta_2\sin(\beta_1X_1) + \epsilon$$
+
+ - If you know a little calculus, then there is an easy mathematical definition of a nonlinear regression model. In a nonlinear regression model at least one of the partial derivatives will be dependent on a model parameter.
+
+ - Any quantity that has a $\beta$ in front of it counts as a degree of freedom used, and subsequently counts as a predictor variable.
+
+ - A hint to identify a nonlinear model is when a parameter is within a function, specifically a nonlinear function.
+
+## Distributional Assumptions for OLS Regression
+
+The assumption $Y ~ N(\mathbf{X\beta},\sigma^2)$ can also be presented in terms of the error term $\epsilon$. Most introductory bookos present the distributional assumption in terms of the error term $\epsilon$, but more advanced books will use the standard Generalized Linear Model (GLM) presentation in terms of the response variable $Y$.
+
+In terms of the error term $\epsilon$ the distributional assumption can also be presented as:
+
+ - The error term $\epsilon ~ N(0,\sigma^2)$. Since $Y ~ N(\mathbf{X\beta},\sigma^2)$, then $\epsilon = Y - \mathbf{X\beta}$ has a $N(0,\sigma^2)$.
+
+## Distributional Assumptions in Terms of the Error
+
+1. The errors are normally distributed.
+2. The errors are mean zero.
+3. The errors are independent and identically distributed (iid).
+4. The errors are _homoscedastic_, i.e. the errors do not have any correlation "in time or space".
+
+When we build statistical models, we will check the assumptions about the errors by assessing the model _residuals_, which are our estimates of the error term.
+
+_Homoscedasticity_: a sequence or vector of random variables is _homoscedastic_ if all random variables in the sequence or vector have the same finite variance. This is also known as the _homogeneity of variance_. [@wiki:homoscedasticity]
+
+You'd need a pretty gross violation of _homoscedastic_ in the kind of problems that we work with today.
+
+## Further Notation and Details
+
+When we estimate an OLS regression model, we will be working with a random sample of response variables $Y_1, Y_2, \ldots, Y_n$, each with a vector of predictor variables $[X_{1i}, X_{2i},\ldots,X_{ki}]$. In matrix notation we will denote the regression problem by $$Y_{(n \times 1)} - X_{(n \times p)}\beta_{(p \times 1)} + \epsilon_{(n \times 1)}$$ where the matrix size is denoted by the subscript. Note that $X = [1, X_1, X_2, \ldots, X_k]$ and $\beta = [\beta_0, \beta_1, \beta_2, \ldots, \beta_k]$.
+
+ - When we want to express the regression in terms of a single observation, the new typically use the $i$ subscript notation $$Y_i = \mathbf{X_i\beta} + \epsilon_i$$ or simply $$Y_i = \beta_0 + \beta_1X_{1i} + \ldots + \beta_kX_{ki} + \epsilon_i$$
+
+\newpage
+
+# Estimation and Inference for Ordinary Least Squares Regression
+Notes below are from the following sources; [@bhattiestimols].
+
+It's important to understand some aspects of estimation and inference for every statistical method that is used.
+
+## Estimation - Simple Linear Regression
+
+ - A _simple linear regression_ is the special case of an OLS regression model with a single predictor variable. $$Y = \beta_0 + \beta1X + \epsilon$$
+
+ - For the $i$th observation we will denote the regression model by $$Y_i = \beta_0 + \beta_1X_i + \epsilon_i$$
+
+ - For the random sample $Y_1, Y_2, \ldots, Y_n$ we can estimate the parameters $\beta_0$ and $\beta_1$ by minimizing the sum of the squared errors, $$\min\sum_{i=1}^{n}\epsilon_i^2$$ which is equivalent to minimizing $$\min\sum_{i=1}^{n}(Y_i - \beta_0 - \beta_1X_i)^2$$
+
+## Estimators and Estimates for Simple Linear Regression
+
+ - The estimators for $\beta_0$ and $\beta_1$ can be computed analytically and are given by $$\hat{\beta_1} = \frac{\sum(Y_i - \bar{Y})(X_i - \bar{X})}{(X_i - \bar{X})^2} = \frac{\mathrm{Cov}(Y,X)}{\mathrm{Var}(X)}$$ and $$\hat{\beta_0} = \bar{Y} - \hat{\beta_1}\bar{X}$$
+
+ - The regression line always goes through the centroid $(\bar{X},\bar{Y})$.
+
+ - We refer to the formulas for $\hat{\beta_0}$ and $\hat{\beta_1}$ as estimators and the values that these formulas can take for a given random sample as the estimates.
+
+ - In statistics we put hats on all estimators and estimates.
+
+ - Given $\hat{\beta_0}$ and $\hat{\beta_1}$ the predicted value or fitted value is given by $$\hat{Y} = \hat{\beta_0} + \hat{\beta_1}X$$
+
+## Estimation - The General Case
+
+ - We seldom build regression models with a single predictor variable. Typically we have multiple predictor variables denoted by $X_1, X_2, \ldots, X_k$, and hence the standard regression case is sometimes referred to as _multiple regression_ in introductory regression texts.
+
+ - We can still think about the estimation of $\beta_0, \beta_1, \beta_2, \ldots, \beta_k$ in the same manner as the sime linear regression case $$\min\sum_{i=1}^n(Y_i - \beta_0 - \beta_1X_{1i} - \beta_2X_{2i} - \ldots - \beta_kX_{ki})^2$$ but the computations will be performed as matrix computations.
+
+## General Estimation - Matrix Notation
+
+Before we set up the matrix formulation for the OLS model, let's begin by defining some matrix notation.
+
+ - The error vector $\epsilon = [\epsilon_1, \ldots, \epsilon_n]^T$.
+ - The response vector $Y = [Y_1, \ldots, Y_n]^T$.
+ - The design matrix or predictor matrix $X = [1, X_1, X_2, \ldots, X_k]$.
+ - The parameter vector $\beta = [\beta_0, \beta_1, \beta_2, \ldots, \beta_k]^T$.
+
+ - All vectors are column vectors, and the superscript $T$ denotes the vector or matrix _transpose_.
+
+## General Estimation - Matrix Computations
+
+ - We minimize the sum of the squared error by minimizing $S(\beta) = \epsilon^T\epsilon$ which can be re-expressed as $$S(\beta) = (Y - X\beta)^T(Y - X\beta)$$
+
+ - Taking the matrix derivative of $S(\beta)$, we get $$S_\beta(\hat{\beta}) = -2X^TY + 2X^TX\hat{\beta}$$
+
+ - Setting the matrix derivative to zero, we can write the expression for the least squares _normal equations_ $$X^TX\hat{\beta} = X^TY$$, which yield the estimator $$\hat{\beta} = (X^TX)^{-1}X^TY$$
+
+ - The estimator form $\hat{\beta} = (X^TX)^{-1}X^TY$ assumes that the inverse matrix $(X^TX)^{-1}$ exists and can be computed. In practice your statistical software will directly solve the normal equations using a QR Factorization.
+
+_normal equations_: projection of a linear space into a subspace to ensure that a solution exists.
+
+_QR Factorization_: or QR decompositionof a matrix is a decomposition of a matrix $A$ into a product $A = QR$ of an orthogonal matrix $Q$ and an upper triangular matrix $R$ [@wiki:qrdecomposition].
+
+## Statistical Inference with the t-Test
+
+ - In OLS regression the statistical inference for the individual regression coefficients can be performed using a t-test.
+
+_t-test_: any statistical test using a t-statistic to derive the test and the p-value for the test. Alternatively, any statistical test that uses a t-statistic as the decision variable.
+
+_statistical test_: have a null and alternative hypothesis, and a test statistic with a known distribution.
+
+ - When performing a t-test there are three primary components: (1) stating the null and alternative hypotheses, (2) Computing the value of the test statistic, and (3) deriving a statistical conclusion based on a desired significance level.
+
+ - Step 1: The null and alternate hypotheses for $\beta_i$ are given by $$H_0:\beta_i = 0 \text{ versus } H_1:\beta_i \neq 0$$
+
+ - Step 2: The t statistic for $\beta_i$ is computed by $$t_i = \frac{\hat{\beta_i}}{SE(\hat{\beta_i})}$$ and has a degrees of freedom equal to the sample size minus the number of model parameters, i.e. $df = n-dim(model)$. For example if you had a regression model with two predictor variables and an intercept estimated on a sample of size 50, then the t statistic would have 47 degrees of freedom.
+
+ - Step 3: Reject the $H_0$ or Fail to Reject $H_0$ based on the value of your t statistic and your significance level. This decision can be made by using the p-value of your t statistic or by using the critical value for your significance level.
+
+## Confidence Intervals for Parameter Estimates
+
+An alternative to performing a formal hypothesis test is to use a confidence interval for your parameter estimate. There is a duality between confidence intervals and formal hypothesis testing for regression parameters.
+
+ - The confidence interval for $\hat{\beta_i}$ is given by $$\hat{\beta_i} \pm t(df,\frac{\alpha}{2}) \times SE(\hat{\beta_i})$$ where $t(df,\frac{\alpha}{2})$ is a t value from a theoretical t distribution, not a t statistic value.
+
+ - If the confidence interval does not contain zero, then this is the equivalent to rejecting the null hypothesis $H_0:\beta_i = 0$.
+
+## Statistical Intervals for Predicted Values
+
+The phrase _predicted value_ is used in statistics to refer to the in-sample _fitted values_ from the estimated model or to refer to the out-of-sample _forecasted values_. The dual use of this phrase can be confusing. A better habit is to use the phrase _in-sample fitted values_ and in the _out-of-sample predicted values_ to clearly reference these different values.
+
+_inference_ is an in-sample activity, measuring the quality of the model based on in-sample performance. _predictive modeling_ is an out-of-sample activity, measuring the quality of the model based on out-of-sample.
+
+ - Given $\hat{\beta} = (X^TX)^{-1}X^TY$ the vector of fitted values can be computed by $\hat{y} = X\hat{\beta} = HY$, where $H = X(X^TX)^{-1}X^T$. The matrix $H$ is called the _hat matrix_ since it puts the hat on $Y$.
+
+ - The point estimate $\hat{Y_0}$ at the point $x_0$ can be computed by $\hat{Y_0} = x_0^T\hat{\beta}$.
+
+ - The confidence interval for an in-sample point $x_0$ on the estimated regression function is given by $$x_0^T\hat{\beta} \pm \hat{\sigma} \sqrt{x_0^T(X^TX)^{-1}x_0}$$
+
+ - The prediction interval for the point estimator $\hat{Y_0}$ for an out-of-sample $x_0$ is given by $$x_0^T\hat{\beta} \pm \hat{\sigma} \sqrt{1 + x_0^T(X^TX)^{-1}x_0}$$
+
+ - Note that the out-of-sample prediction interval is always wider than the in-sample confidence interval.
+
+## Further Notation and Details
+
+In order to compute the t statistic you need the standard error of the parameter estimate. Most statistical software packages should provide this estimate and compute this t statistic for you However, it is always a good idea to know from where this number comes. Here are the details needed to compute the standard error for $\hat{\beta_i}$.
+
+ - The estimated parameter vector $\hat{\beta}$ has the covariance matrix given by $$\mathrm{Cov}(\hat{\beta}) = \hat{\sigma}^2X^TX$$ where $$\hat{\sigma}^2 = \frac{SSE}{n - k - 1}$$
+
+ - The variance of $\hat{\beta_i}$ is the $i$th diagonal element of the covariance matrix $$\mathrm{Var}(\hat{\beta_i}) = \hat{\sigma}^2(X^TX)_{ii}$$
+
+\newpage
 
 # Study Questions for Ordinary Least Squares Regression
 
@@ -230,6 +398,8 @@ __Question__: Variable Selection: How does forward variable selection work? How
 does backward variable selection work? How does stepwise variable selection
 work?
 
+\newpage
+
 # Study Questions for Multivariate Analysis
 
 ## Principle Components Analysis
@@ -276,4 +446,5 @@ __Question__: Do the data need to be treated before we perform a cluster
 analysis?
 
 \newpage
+
 # References

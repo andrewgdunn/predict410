@@ -6,6 +6,8 @@ libname mydata '/scs/crb519/PREDICT_410/SAS_Data/' access=readonly;
 data ames;
     set mydata.ames_housing_data;
 
+proc 
+
 /*
 * initial examination of the correlation to saleprice;
 proc corr data=ames nosimple;
