@@ -252,6 +252,223 @@ In order to compute the t statistic you need the standard error of the parameter
 
 \newpage
 
+# Analysis of Variance and Related Topics for Ordinary Least Squares Regression
+Notes below are from the following sources; [@bhattianovaols].
+
+## The ANOVA Table for OLS Regression
+
+The Analysis of Variance or ANOVA Table is a fundamental output from a fitted
+OLS regression model. The output from the ANOVA table is sued for a number of
+purposes:
+
+ - Show the decomposition of the total variation
+ - Compute the R-Squared and Adjusted R-Squared metrics
+ - Perform the Overall F-test for a regression effect
+ - Perform a F-test for nested models as commonly used in forward, back-ward, and stepwise variable selection
+
+## Decomposing the Sample Variation
+
+ - The Total Sum of Squares is the total variation in the sample
+ - The Regression Sum of Squares is the variation in the sample that has been explained by the regression model
+ - The Error Sum of Squares is the variation in the sample that cannot be explained
+
+| | | |
+|:-:|:-:|:-:|
+| SST | $\sum_i^n(Y_i - \bar{Y})^2$ | Total Sum of Squares |
+| SSR | $\sum_i^n(\hat{Y_i} - \bar{Y})^2$ | Regression Sum of Squares |
+| SSE | $\sum_i^n(Y_i - \hat{Y})^2$ | Error Sum of Squares |
+
+## Metrics for Goodness-Of-Fit in OLS Regression
+
+The Coefficient of Determination - R-Squared
+$$R^2 = \frac{SSR}{SST} = 1 - \frac{SSE}{SST}$$
+
+ - The Coefficient of Determintation $R^2$ will take values $0 \leq R^2 \leq 1$ and represents the proportion of the variance explained by the regression model.
+
+ - Implicitly, $R^2$ is a function of the number of parameters in the model. For a nested subset of predictor variables $p_0 < p_1$, i.e. $p_1$ contains the original $p_0$ predictor variables and some new predictor variables, $R^2$ will have a monotonic relationship such athat $R^2(p_0) \leq R^2(p_1)$.
+
+Adjusted R-Squared
+$$R^2_{ADJ} = 1 - \frac{\frac{SSE}{(n - k - 1)}}{\frac{SST}{(n - 1)}} = 1 - \frac{\frac{SSE}{(n - p)}}{\frac{SST}{n - 1}}$$
+
+ - Note that the standard regression notation uses $k$ for the number of predictor variables included in the regression model and $p$ for the total number of parameters in the model. When the model includes an intercept term, then $p = k + 1$. When the model does not include an intercept term, then $p = k$.
+
+ - The Adjusted R-Squared metric accounts for the model complexity of the regression model allowing for models of different sizes to be compared.
+
+ - The Adjusted R-Squared metric will not be monotonic in the number of model parameters.
+
+ - The Adjusted R-Squared metric will increase until you reach an optimal model, then it will flatten out and likely decrease.
+
+## The Overall F-Test for a Regression Effect
+
+Consider the regression model $$Y = \beta_0 + \beta_1X_1 + \ldots + \beta_kX_k$$ The Overall F-Test for a regression effect is a joint hypothesis test that at least one of the predictor variables has a non-zero coefficient.
+
+ - The null and alternate hypotheses are given by $$H_0 : \beta_1 = \ldots = \beta_k = 0 \text{  versus  } H_1 : \beta_i \neq 0$$ for some $i \in {1,\ldots,k}$.
+
+ - The test statistic for the Overall F-test is given by $$F_0 = \frac{\frac{SSR}{k}}{\frac{SSE}{(n-p)}}$$ which has a F-distribution with $(k,n-p)$ degrees-of-freedom for a regression model with $k$ predictor variables and $p$ total parameters. When the regression model includes and intercept, then $p = k + 1$. If the regression model does not include an intercept, then $p = k$.
+
+ - In some cases this can be very useful, such as if we had a categorical variable that has segmentation, the F-test can be useful. It is less likely that continuous variables will all have a zero coefficient.
+
+## The F-Test for Nested Models
+
+For our discussion of nested models, let's consider two concrete examples which we will refer to as the _full model_ (FM) $$Y = \beta_0 + \beta_1X_1 + \beta_2X_2 + \beta_3X_3$$ and a _reduced model_ (RM) $$Y = \beta_0 + \beta_1X_1 + \beta_2X_2$$
+
+Notice that the predictor variables in the reduced model are a subset of the predictor variables in the full model, i.e. $RM \subset FM$.
+
+ - In this notation we say that the FM _nests_ the RM, or the RM is _nested by_ the FM.
+
+ - We only use the terms _full model_ and _reduced model_ in the context of nested models.
+
+ - We can use a F-test for nested models to decide whether or not to include an additional predictor variable in the final model.
+
+Given a _full model_ and a _reduced model_ we can perform a F-test for nested models for the exclusion of a single predictor variable or multiple predictor variables.
+
+In the context of our example, we could test either of these null hypotheses:
+
+ - Example 1: Test a Single Predictor Variable $$H_0 : \beta_3 = 0 \text{ versus } H_1 : \beta_3 \neq 0$$
+
+ - Example 2: Test Multiple Predictor Variables $$H_0 : \beta_2 = \beta_3 = 0 \text{ versus } H_1 : \beta_i \neq 0$$ for some $i \in {2,3}$.
+
+The test statistic for the F-test for nested models will always have this form in terms of the FM and RM.
+
+ - Test Statistic for the Nested F-Test $$F_0 = \frac{\frac{[SSE(RM) - SSE(FM)]}{(dim(FM) - dim(RM))}}{\frac{SSE(FM)}{[n-dim(FM)]}}$$
+
+ - The test statistic is based on the reduction in the $SSE$ obtained from adding additional predictor variables. Note that $SSE(FM)$ is always less than $SSE(RM)$.
+
+ - The _dimension_ of a statistical model is the number of parameters.
+
+## Connection to Forward Variable Selection
+
+The F-test for nested models is a the standard statistical test implemented in most statistical software packages for performing forward and backward, and hence stepwise, variable selection.
+
+Forward Variable Selection
+
+ - Given the model $Y = \beta_0 + \beta_1X_1$ and a set of candidate predictor variables $Z_1, \ldots, Z_s$, how do we select the best $Z_i$ to include in our model as $X_2$?
+
+ - In forward variable selection the FM will be $Y = \beta_0 + \beta_1X_1 + \beta_2Z_i$ and the RM will be $Y = \beta_0 + \beta_1X_1$. The forward variable selection algorithm will select the $Z_i$ with the largest F-statistic that is statistically significant at a predetermined level. The algotihm will continue to add predictor variables until there are no predictor variables that are statistically significant to the predetermined level.
+
+## Connection to Backward Variable Selection
+
+Backward Variable Selection
+
+ - Given the model $$Y = \beta_0 + \beta_1X_1 + \ldots + \beta_sX_s$$ how do we eliminate the predictor variables whose effects are not statistically significant?
+
+ - In backward variable selection the FM will be $Y = \beta_0 + \beta_1X_1 + \ldots + \beta_sX_s$ and the RM will be $Y = \beta_0 + \beta_1X_1 + \ldots + \beta_{s-1}X_{s-1}$, for notional convenience. The backward variable selection algorithm will drop the $X_i$ with the smallest F-statistic that is not statistically significant at a predetermined level. The algorithm will continue to drop predictor variables until there are no predictor variables that aren't statistically significant to the predetermined level.
+
+ - Note that both the forward and backward variable selection procedures consider only one variable at each iteration.
+
+\newpage
+
+# Statistical Inference Versus Predictive Modeling in OLS Regression
+Notes below are from the following sources; [@bhattiinfpred]
+
+ - There are two reasons to build statistical models: (1) for inference, and (2) for prediction.
+
+ - Statistical inference is focused on a set of formal hypotheses, denoted by $H_0$ for the _null hypothesis_ and $H_1$ for the _alternate hypothesis_, and a test statistic with a known sampling distribution. A test statistic will have a specified distribution, e.g. the t-statistic for an OLS regression parameter has a t-distribution with the degrees-of-freedom equal to $n-p$ where $p$ is the number of model parameters for the dimension of the model.
+
+ - Predictive modeling is focused on accurately producing an estimated value for the primary quantity of interest or assigning an observation to the correct class (group). Typically, when we use the term 'predictive', we are referring to the model's ability to predict future or out-of-sample values, not in-sample values.
+
+## The Standard Modeling Process
+
+0. Data Quality Check
+1. Exploratory Data Analysis: How do our predictor variables relate to the response variable?
+2. Model Identification: Which predictor variables should be included in our model?
+3. Model Validation: Should we trust our models and the conclusions that we wish to derive from our model?
+
+How we perform the Model Validation step is determined on the prescribed use of the model. Is the model to be used for statistical inference or is it to be used for predictive modeling?
+
+## Model Validation for Statistical Inference
+
+ - Model validation when the model is to be used for statistical inference is generally referred to as the _assessment of goodness-of-fit_.
+
+ - When we fit a statistical model, we have underlying assumptions about the probabilistic structures for that model. All of our statistical inference is derived from those probabilistic assumptions. Hence, if our estimated model, which is dependent upon the sample data, does not conform to these probabilistic assumptions, then our inference will be incorrect.
+
+ - When we validate a statistical model to be used for statistical inference, we are validating that the estimated model conforms to these probabilistic assumptions.
+
+ - For example in OLS regression we examine the residuals to make sure that they have a normal probability distribution and that they are homoscedastic.
+
+## Model Validation for Predictive Modeling
+
+ - Model validation when the model is to be used for predictive modeling is generally referred to as the _assessment of predictive accuracy_.
+
+ - When we fit a statistical model for predictive modeling, we can be much more tolerant of violations of the underlying probabilistic assumptions.
+
+ - Our primary interest in predictive modeling is estimating the response variable $Y$ as 'accurately' as possible. When validating a predictive model, we tend to focus on summary statistics based on the quantity $(Y_i - \hat{Y_i})$. Examples include the Mean Absolute Error (MAE) and the Mean Squared Error (MSE).
+
+ - The evaluation of predictive models is typically performed through a form of _cross-validation_ where the sample is split into a _training sample_ and a _test sample_. In this mdel validation, the model is estimated on the _training sample_ and then evaluated out-of-sample on the _testing sample_.
+
+## Goodness-Of-Fit Versus Predictive Accuracy
+
+ - Goodness-Of-Fit
+     + Goodness-Of-Fit (GOF) is assessed in-sample
+     + The objective is to confirm the model assumptions
+     + In OLS regression the GOF is typically assessed using graphical procedures (scatterplots) for the model residuals $e_i = Y_i - \hat{Y_i}$.
+ - Predictive Accuracy
+     + Predictive Accuract (PA) is assessed out-of-sample
+     + The objective is to measure the error of the predicted values
+     + In OLS regression PA is typically assessed using error based metrics: Mean Square Error, Root Mean Square Error, and Mean Absolute Error.
+
+## Assessing the Goodness-Of-Fit in OLS Regression
+
+ - Validate the normality assumption: produce a Quantile-Quantile plot (QQ-Plot) of the residuals to compare their distribution to a nromal distribution.
+
+ - Validate the homoscedasticity assumption (equal variance): produce a scatterplot of the residuals against each predictor variable. If there is any structure in this plot, then the model will need a transformation of the predictor variable or an additional predictor variable added to the model.
+
+ - Interpret the R-Squared measure for your model. Applications tend to have typical ranges for "good" R-Squared values. If Model 1 has R-Squared of 0.23 and Model 2 has R-Squared of 0.54, then Model 2 should be preferred to Model 1, provided that Model 2 satisfies the other GOF conditions.
+
+ - By itself R-Square is not an exclusive measure of GOF. It's a measure of GOF provided everything else is satisfied.
+
+## Statistical Inference in OLS Regression
+
+If our Analysis of Goodness-Of-Fit for our OLS regression does not uncover any major violations of the underlying probabilistic assumptions, then we can feel confident in our use of the two primary forms of statistical inference in OLS regression.
+
+ - The t-test for the individual model coefficients: $$H_0 : \beta_i = 0 \text{ versus } H_1 : \beta_i \neq 0$$ for model coefficient $i$.
+
+ - The test statistic for the corresponding t-test is given by $$t_i = \frac{\hat{\beta_i}}{SE(\hat{\beta_i})}$$ where $t_i$ has degrees of freedom equal to the sample size minus the number of model parameters, i.e. $df = n - dim(Model)$.
+
+In addition to the 'local' tests of a regression effect for the individual predictor variables, we also have a 'global' test for a regression effect.
+
+ - The Overall F-test for a regression effect: $$H_0 : \beta_1 = \beta_2 = \ldots = 0 \text{ versus } H_1 : \beta_i \neq 0$$ for some $i$, i.e. at least one of the predictor variables has an estimated coefficient that is statistically different from zero.
+
+ - The test statistic for the Overall F-test is given by: $$F_0 = \frac{\frac{SSR}{k}}{\frac{SSE}{(n-p)}}$$ which has a F-distribution with $(k, n-p)$ degrees-of-freedom for a regression model with $k$ predictor variables and $p$ total parameters. When the regression model includes an intercept, then $p = k + 1$. If the regression model does not include an intercept, then $p = k$.
+
+## Predictive Accuracy in OLS Regression
+
+The two primary metrics for assessing statistical models for out-of-sample predictive accuracy are Mean Square Error and Mean Absolute Error.
+
+ - Mean Square Error (MSE) $$MSE = \frac{1}{n}\sum_{i=1}^n(Y_i - \hat{Y_i})^2$$ Root Mean Square Error (RMSE) is the square root of the MSE. There is no statistical reason to prefer one measure over the other. However, the RMSE can be used for presentation purposes when the MSE is very small or very large as the square root transformation will increase the small numbers and decrease the large numbers.
+
+ - Mean Absolute Error (MAE) $$MAE = \frac{1}{n}\sum_{i=1}^n|Y_i - \hat{Y_i}|$$
+
+## The Bias-Variance Trade-Off
+
+An interesting and useful property of Mean Square Error (MSE) is that it can be decomposed into two components: the prediction variance and the square of the prediction bias. This decomposition is referred to as the _Bias-Variance Trade-Off_, and it is referenced throughout predictive modeling, especially in the presentation of concepts from statistical and machine learning.
+
+ - Throughout these notes we have been using the _empirical_ Mean Square Error for the predictved values $\hat{Y_i}$. $$MSE = \frac{1}{n}\sum_{i=1}^n(Y_i - \hat{Y_i})^2$$
+
+ - The _Bias-Variance Trade-Off_ is presented from the _theoretical Mean Square Error_ $$MSE = \mathbb{E}(Y_i - \hat{Y_i})^2$$ where $\mathbb{E}[X]$ denotes the mathematical expectation of $X$.
+
+<!-- ## Derivation of the Bias-Variance Trade-Off
+
+The derivation of the _Bias-Variance Trade-Off_ is based on a standard algebraic trick of adding zero - $\mathbb{E}(\hat{Y_i}) - \mathbb{E}(\hat{Y_i})$. -->
+
+
+## Final Comments on the Bias-Variance Trade-Off
+
+The crux of the _Bias-Variance_ Decomposition is to note that both terms of the decomposition are non-negative. Hence, we can choose to minimize either the Variance or the bias.
+
+ - The variance of the predicted value is a measure of the spread of the predicted value from its mean.
+ - The bias of the predicted value is a measure of the distance from the mean of the predicted value to the target value.
+
+Both of these components are functions of _model complexity_, i.e. the nubmer of parameters in the model. Ideally, you would want to have your prediction to be accurate (low bias) and precise (low variance). Bias will decline and variance will increase as the model complexity increases.
+
+## Further Notation and Details
+
+The Mean Square Error of the predicted values $\hat{Y_i} $$MSE = \frac{1}{n}\sum_{i=1}^n(Y_i - \hat{Y_i})^2$$ should not be confused with the estimate or variance parameter $\sigma^2$ in an OLS regression model with the Error Sum of Squares denoted by SEE and $p$ parameters, $$\sigma^2 = \frac{SSE}{n-p}$$ which is frequently referred to as the _mean square error_ of the regression or the _mean square_ of the residuals, but is not denoted by MSR as to not be confused with the _mean square of the regression_ $(MSR = \frac{SSR}{k})$.
+
+If you are in the context of a fitted OLS regression model, then the term MSE is referring to the estimate $\hat{\sigma^2}$.
+
+\newpage
+
 # Study Questions for Ordinary Least Squares Regression
 
 __Question__: When we refer to a 'simple linear regression', to what type of
