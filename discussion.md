@@ -137,3 +137,92 @@ descriptive statistics were all the same. Figure 3 and 4 depict situations where
 a single observation has significant influence on the regression, where as
 figure 2 depicts a more subtle situation where the model would need to be
 revised (instead of the considered observations).
+
+# Week 3
+
+## General Model Validation
+Why do we need to validate statistical models? Does the scope of this validation
+change depending on the intended use of the model? In general we can build
+models for two primary purposes: statistical inference and predictive modeling.
+Is the model validation process the same for both of these purposes? If not, how
+does it differ?
+
+__Response__:
+
+[^0] States succinctly: regression model validation is the process of deciding
+whether the numerical results quantifying hypothesized relationships between
+variables, obtained from regression analysis, are acceptable as descriptions of
+the data.
+
+Dr. Bhatti in [^1] presents that there are two reasons to build statistical
+models: (1) for inference, (2) for prediction.
+
+For statistical inference model validation is generally referred to as the
+assessment of goodness-of-fit. For predictive modeling model validation is
+generally referred to as assessment of predictive accuracy.
+
+One of the noteworthy differences between these two validation methodologies is
+that for inference you're making underlying assumptions about the probabilistic
+structures of the model, so if data does not conform to these probabilistic
+assumptions the inference will be incorrect. For predictive modeling, due to
+intent, we can be much more tolerant of violations of the underlying
+probabilistic assumptions.
+
+If you've not already watched [^1], please do, Dr. Bhatti presents the material
+more thoroughly than I discussed here.
+
+[^0]: Regression model validation. (2015, April 18). In Wikipedia, The Free Encyclopedia. Retrieved 17:12, April 18, 2015, from http://en.wikipedia.org/w/index.php?title=Regression_model_validation&oldid=656997441
+[^1]: Bhatti, D.C. 2011e. Statistical inference versus predictive modeling in OLS regression. http://nwuniversity.adobeconnect.com/p5vo4o95h0r/.
+
+## Statistical Graphics and the Analysis of Goodness-Of-Fit
+What actions constitute an analysis of goodness-of-fit for a regression model?
+What are the typical graphical displays used in this analysis of goodness-of-
+fit? Why do we assess the goodness-of-fit of a regression model? What can go
+wrong in the interpretation of the results and the use of a regression model
+that would be deemed to “fit poorly”?
+
+__Response__:
+
+I'll paraphrase from Dr. Bhatti [^1] again:
+
+ - Goodness-Of-Fit (GOF) is assessed within sample
+ - The objective is to confirm the model assumptions
+ - In OLS regression the GOF is typically assessed using graphical procedures (scatterplots) for the model residuals
+
+Within an OLS aggression, where our probabilistic assumption is based on the
+normal distribution:
+
+To validate the normality assumption one would produce a Quantile-Quantile plot
+(QQ-Plot) of the residuals to compare their distribution to a normal distribution.
+
+To validate the homoscedasticity assumption one would produce a scatterplot of
+the residuals against each predictor variable. If there is any structure in this
+plot, then the model will need a re-expression of the independent variable or
+the addition of another independent variable.
+
+One would also interpret the R-Square measure for the model. This can be used as
+a simplistic measure for model comparison. By itself R-Square is not an
+exclusive measure of GOF. It's a measure of GOF providing that the previous
+mentioned conditions are satisfied.
+
+[^1]: Bhatti, D.C. 2011e. Statistical inference versus predictive modeling in OLS regression. http://nwuniversity.adobeconnect.com/p5vo4o95h0r/.
+
+## Only Traditional Goodness-Of-Fit Model Validation?
+When we validate a statistical model, should we only consider the traditional
+Goodness-Of-Fit measures? Are there other ways in which the model should be
+validated? Should the validation be application specific or purely statistical?
+Do we have any examples that we can share with the class?
+
+We could consider our model to be good based on the GOF criteria for a specific
+subset of the data that we've decided to examine. In a case where you have large
+amounts of data points (now days we'd consider Big Data) you might do your
+initial model construction on a random sample of a percentage of the data. From
+here you may want to run the model on multiple other samples from the raw data
+set.
+
+There is a need to perform some contextual validation also, your domain specific
+experience with the phenomena might tell you that a model that satisfies GOF
+conditions still isn't robust for your purposes.
+
+
+__Response__:
