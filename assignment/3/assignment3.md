@@ -447,6 +447,10 @@ $$\text{SalePrice}_0 = 31604 +  98.20384 \times \text{GrLivArea}$$
 $$\text{SalePrice}_0 = 40449 + 85.89009 \times \text{GrLivArea} + 997.44693 \times \text{MasVnrArea}$$
 $$\text{SalePrice}_0 = 39321 + 84.92176 \times \text{GrLivArea} + 97.45046 \times \text{MasVnrArea} + 4.61086 \times \text{BsmtUnfSF}$$
 
+We'll not walk through interpreting each of these models, as we've not done any
+transformations on the dependent or independent variables its safe to say that
+we will be dealing with unit changes rather than percentage changes.
+
 \newpage
 
 The diagnostic model performance information is below:
@@ -476,7 +480,7 @@ then we may begin to look for the construction of different models.
 
 That is to say, by having two different data sets and comparing regression
 performance, the practitioner can look at the respective model performance
-objectively. If you were certain that you 'ceaned' data set was more
+objectively. If you were certain that you 'cleaned' data set was more
 representative of the phenomena you wanted to model, then observing degradation
 in model performance would tell you that your initial models we're fitting well
 to a different phenomena (influenced by the outliers).
@@ -485,11 +489,29 @@ to a different phenomena (influenced by the outliers).
 
 # Conclusion / Reflection
 
-How does transformation and outlier deletion impact the modeling process and results?
+Transformation and outlier deletion are two highly influential techniques that
+we can use to influence the model fit, and potentially model robustness. There
+are characteristics of data that give indication that this technique may be
+required, however the application of the technique is highly procedural and
+requires interpretation.
 
-Do these activities benefit or create additional difficulties
+When we begin to examine the Goodness-of-Fit criteria, we can observe if there
+are indicators that mean we should employ either of these techniques.
 
-Whats the next steps in the modeling process
+There are some cases where it is absolutely necessary to use these techniques,
+as in scenarios where you can confirm that during collection you've received
+observations that truly are not representative of the phenomena your modeling,
+or if the variable transformation is required within the professional domain
+(e.g. pH, concentrations).
+
+The next steps in the modeling process for this data set would be to see if
+there is other data that can be used to begin an attempt at model validation. It
+may be valuable at this time to present the initial model findings to the
+business owner. In this case, our initial assessment is that a categorical
+variable performs the best for explaining variability of Sale Price. If the
+Business Owner doesn't want us to use a categorical variable, or would rather we
+use a multi-variable approach to include both continuous and categorical
+variables it would be best to know that before proceeding to validation.
 
 \newpage
 

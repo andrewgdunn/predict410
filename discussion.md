@@ -213,6 +213,8 @@ Goodness-Of-Fit measures? Are there other ways in which the model should be
 validated? Should the validation be application specific or purely statistical?
 Do we have any examples that we can share with the class?
 
+__Response__:
+
 We could consider our model to be good based on the GOF criteria for a specific
 subset of the data that we've decided to examine. In a case where you have large
 amounts of data points (now days we'd consider Big Data) you might do your
@@ -223,6 +225,3 @@ set.
 There is a need to perform some contextual validation also, your domain specific
 experience with the phenomena might tell you that a model that satisfies GOF
 conditions still isn't robust for your purposes.
-
-
-__Response__:
