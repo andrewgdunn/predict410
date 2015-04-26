@@ -225,3 +225,72 @@ set.
 There is a need to perform some contextual validation also, your domain specific
 experience with the phenomena might tell you that a model that satisfies GOF
 conditions still isn't robust for your purposes.
+
+# Week 4
+
+## Why do we need data transformations?
+How do we identify the need for a data transformation? Does the need for a data
+transformation become apparent from exploratory data analysis or from model
+validation? Are there situations where we would know a priori that we will need
+a data transformation?
+
+__Response__:
+
+In our reading [^0] we've found that non-linear re-expression
+of the variables may be necessary when any of the following apply:
+
+ - The residuals have a skewed distribution. The purpose of a transformation is to obtain residuals that are approximately symmetrically distributed.
+ - The spread of the residuals changes systematically with the values of the dependent variable. The purpose of the transformation is to remove that systematic change in spread, achieving approximate homoscedasticity.
+ - A desire to linearize a relationship.
+ - When the context of the data expects, e.g. chemistry concentrations are expressed commonly as logarithms.
+ - A desire to simplify the model, e.g. when a log-transform can simplify the number and complexity of interaction terms.
+
+Furthermore, a log-transform is specifically indicated instead of another
+transform when:
+
+ - The residuals have a "strongly" positively skewed distribution. Tukey in [^1] provides quantitative ways to estimate the transformation based on rank statistics of the residuals. However, it domes down to: if a log-transform symmetrizes the residuals it was likely the right re-expression.
+ - When the standard deviation of the residuals is directly proportional to the fitted values.
+ - When the relationship is close to exponential.
+
+Some non-reasons to use a re-expression include:
+
+ - Making outliers look less like outliers. Wuber in [^2] states: an outlier is a datum that does not fit some parsimonious relatively simple description of the data. To change one's perspective to make outliers look better is usually an incorrect reversal of priorities.
+ - Letting the software automatically do it (without you're desiring so).
+ - When making 'bad' data appear to be well behaved.
+ - For visualization. If you need a re-expression for visualization, ensure that you're not doing it within the model also.
+
+
+[^0]: W. A. Huber, “In linear regression, when is it appropriate to use the log of an independent variable instead of the actual values?” 2010. [Online]. Available: http://stats.stackexchange.com/questions/298/in-linear-regression-when-is-it-appropriate-to-use-the-log-of-an-independent-va. [Accessed: 17-Apr-2015]
+[^1]: J. W. Tukey, “Exploratory data analysis,” 1977.
+[^2]: W. A. Huber, “Logistic regression: Transforming variables,” 2010. [Online]. Available: http://stats.stackexchange.com/questions/4831/logistic-regression-transforming-variables. [Accessed: 17-Apr-2015]
+
+## Indicator Variables
+
+Are indicator, or dummy, variables a data transformation? Are there
+parameterizations where indicator variables are a data transformation and
+parameterizations where they are not?
+
+__Response__:
+
+The creation of indicator or dummy variables can involve a re-expression, but
+some dependent variables already are expressed in a form that is useful for
+dummy variable analysis.
+
+
+## Outliers
+
+What is an “outlier”? Are outliers easy to identify? Do they affect your
+statistical models? How? Does this effect matter more, less, or the same if you
+have a small number of data points, say 50, versus a larger number like 1,000,
+100,000, or 1,000,000? Do we need to worry about individual outliers when we
+have a large number of data points, or does this concept have a different name?
+
+__Response__:
+
+From An outlier is a data point that comes from a different population /
+distribution / data generating process, than the one you intend to study [^0].
+
+One proposed method of identifying an outlier is that if your model increases in
+performance once that observation is removed it can be considered an outlier.
+
+[^0]: gung, "Rigorous Definition of an Outlier", 2011. [Online]. Available: http://stats.stackexchange.com/questions/7155/rigorous-definition-of-an-outlier/20197#20197
