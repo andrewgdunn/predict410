@@ -13,7 +13,7 @@ and pandoc-citeproc.
 
 \newpage
 
-# Dummy Coding of Categorical Variables
+# Indicator Variables
 
 ## Examine a Categorical Variable
 
@@ -77,7 +77,7 @@ $$\text{SalePrice} = 45251 \times 10 - 95004 = 357506$$
 
 The predicted model appears to only be relatively close at points 3, 5, 6, 8.
 
-## Indicator Coding a Categorical Variable
+## Indicator Variables, (Dummy Coding) a Categorical Variable
 
 OverallQual is an interesting parameter, because it is a 10-way Lickert some
 would choose to incorporate the parameter into a model as a continuous variable.
@@ -100,31 +100,8 @@ use nine variables to investigate, this is simpler to consider as a table:
 
 Table: Modeling 10-Way Lickert OverallQual with 9 Indicator Variables
 
-\newpage
-
 We will use the data procedure to dummy code OverallQual as an indicator
 variable. To examine our progress we evaluate a proc freq of the OverallQual:
-
-~~~{.fortran}
-data ames_dummy_oc;
-  set ames;
-  keep SalePrice OverallQual oc_1 oc_2 oc_3 oc_4 oc_5 oc_6 oc_7 oc_8 oc_9 oc_10;
-  if OverallQual in (1 2 3 4 5 6 7 8 9 10) then do;
-    oc_1 = (OverallQual eq 1);
-    oc_2 = (OverallQual eq 2);
-    oc_3 = (OverallQual eq 3);
-    oc_4 = (OverallQual eq 4);
-    oc_5 = (OverallQual eq 5);
-    oc_6 = (OverallQual eq 6);
-    oc_7 = (OverallQual eq 7);
-    oc_8 = (OverallQual eq 8);
-    oc_9 = (OverallQual eq 9);
-    oc_10 = (OverallQual eq 10);
-    end;
-
-proc freq data=ames_dummy_oc;
-  tables OverallQual oc_1 oc_2 oc_3 oc_4 oc_5 oc_6 oc_7 oc_8 oc_9 oc_10;
-~~~
 
 
 | OverallQual | Frequency | Percent | Cumulative Frequency | Cumulative Percent |
@@ -166,11 +143,6 @@ We now build a model, but we hold oc_10 to be the basis of interpretation:
 
 $$\text{SalePrice} = \beta_0 + \beta_1\text{oc\_1} + \beta_2\text{oc\_2} + \beta_3\text{oc\_3} + \beta_4\text{oc\_4} + \beta_5\text{oc\_5} + \beta_6\text{oc\_6} + \beta_7\text{oc\_7} + \beta_8\text{oc\_8} + \beta_9\text{oc\_9} + \epsilon$$
 
-~~~{.fortran}
-proc reg data=ames_dummy_ec;
-  model saleprice = oc_1 oc_2 oc_3 oc_4 oc_5 oc_6 oc_7 oc_8 oc_9;
-~~~
-
 Resulting in the parameter estimations and model diagnostics:
 
 | Variable | DF | Parameter Estimate | Standard Error | t Value | $\text{Pr} > |t|$ |
@@ -205,7 +177,7 @@ $$\begin{split}
 \text{SalePrice} = 450217 - 401492 \times \text{oc\_1} - 397892 \times \text{oc\_2} \\
 - 367031 \times \text{oc\_3} - 343732 \times \text{oc\_4} - 315465 \times \text{oc\_5} \\
 - 288087 \times \text{oc\_6} - 245192 \times \text{oc\_7} - 179304 \times \text{oc\_8} \\
-- 81881 \times \text{oc\_9} + \epsilon
+- 81881 \times \text{oc\_9}
 \end{split}$$
 
 If the house is of OverallQual 1, then the above model becomes:
@@ -288,50 +260,279 @@ That is to say, if the OverallQual is 10, then the SalePrice in this model is
 450217. Looking back at our sorted mean we see the SalePrice for OverallQual of
 10 had a mean of 450217.32.
 
-Overall, due to the expression of the concept in the beginning of this section,
-we should have expected these results from the beginning. The model passes
-through the means of each OverallQual step.
-
+It seems that we're assuming the dependent SalePrice has a linear relationship
+with the independent OverallQual, and that the slope does not depend on the
+OverallQual, but that OverallQual sets the intercept for SalePrice. The
+variables for $\beta_1, \ldots, \beta_9$ measure the effects of Quality ratings
+$1, \ldots, 9$ respectively, compared to a Quality rating of 10.For example, in
+this model $\beta_4 - \beta_2$ reflects the relative difference between
+OverallQual 4 and 2, respectively on SalePrice.
 
 ## Dummy Code Hypothesis Testing
 
 $$ H_0 : \beta_{1..9} = 0 \text{ versus } H_1 : \beta_{1..9} \neq 0$$
 
-Report hypothesis test for each beta
-Discuss results for each test
+For each variable $\beta_{1..9}$ we observe that the model returned results that
+indicate statistical significance. This model, without a continuous variable, is
+highly uncomfortable to work with and interpret. Even with the Adj. R-Square
+value being lower for this model, and all the dependent variables showing
+statistical significance, it still provides discomfort to the analyst.
 
 ## Dummy Code another Categorical Variable
 
-Data step, one dummy code for each category
+We will use the data procedure to dummy code HouseStyle as an indicator
+variable. To examine our progress we evaluate a proc freq of the HouseStyle:
+
+
+| HouseStyle | Frequency | Percent | Cumulative Frequency | Cumulative Percent |
+|:----------:|:---------:|:-------:|:--------------------:|:------------------:|
+| 1.5Fin | 314 | 10.72 | 314 | 10.72 |
+| 1.5Unf | 19 | 0.65 | 333 | 11.37 |
+| 1Story | 1481 | 50.55 | 1814 | 61.91 |
+| 2.5Fin | 8 | 0.27 | 1822 | 62.18 |
+| 2.5Unf | 24 | 0.82 | 1846 | 63.00 |
+| 2Story | 873 | 29.80 | 2719 | 92.80 |
+| SFoyer | 83 | 2.83 | 2802 | 95.63 |
+| SLvl | 128 | 4.37 | 2930 | 100.00 |
+
+
+Table: Frequency HouseStyle
+
+For brevity we examine the hs_1 and hs_2 variables, which correspond to '1Story'
+and '1.5Fin' respectively:
+
+| hs_1 | Frequency | Percent | Cumulative Frequency | Cumulative Percent |
+|:-----------:|:---------:|:-------:|:--------------------:|:------------------:|
+| 0 | 1449 | 49.45 | 1449 | 49.45 |
+| 1 | 1481 | 50.55 | 2930 | 100.00 |
+
+Table: Frequency hs_1, Indicator Variable for HouseStyle '1Story'
+
+| hs_2 | Frequency | Percent | Cumulative Frequency | Cumulative Percent |
+|:-----------:|:---------:|:-------:|:--------------------:|:------------------:|
+| 0 | 2616 | 89.28 | 2616 | 89.28 |
+| 1 |  314 | 10.72 | 2930 | 100.00 |
+
+Table: Frequency hs_2, Indicator Variable for HouseStyle '1.5Fin'
+
+We notice that the hs_1 and hs_2 variables are properly coded to match up with
+the HouseStyle frequency table, with hs_1 have 1 coded 1481 times and hs_2
+having 1 coded 314 times respectively.
 
 # Automated Variable Selection
 
 ## Obtaining the "Best" Model
 
-I'm going to pre-select continuous variables based upon our previous
-investigation.
+From assignment 2 we will consult the results of correlating the continous
+variables to SalePrice. We will take the top 7 to incorporate into our automated
+variable selection strategy.
+
+| Continuous Variable  | Correlation to SalePrice | Prob > $|r|$ under $H_0$: $\rho$=0 | Number of Observations |
+|:-:|:-:|:-:|:-:|
+| GrLivArea | 0.70678 | <0.0001 | 2930 |
+| GarageArea | 0.64040 | <0.0001 | 2929 |
+| TotalBsmtSF | 0.63228 | <0.0001 | 2929 |
+| FirstFlrSF | 0.62168 | <0.0001 | 2930 |
+| MasVnrArea | 0.50828 | <0.0001 | 2907 |
+| BsmtFinSF1 | 0.43291 | <0.0001 | 2929 |
+| BsmtUnfSF | 0.18286 | <0.0001 | 2929 |
+
+Table: Continuous variable correlation to SalePrice, top seven.
+
+We run the reg procedure using the selection method; adjrsq, cp, forward,
+backward, and stepwise. The follow models are found to to be the ranked best
+by these methods.
+
+### Adjusted R-Square Selection
+
+Model Selected:
+
+$$\begin{split}
+\text{SalePrice} = 6657.59 + 69.5822 \times \text{GrLivArea} + 41.8777 \times \text{GarageArea} + 28.0007 \times \text{TotalBsmtSF} \\
+- 24.9846 \times \text{FirstFlrSF} + 16.3510 \times \text{MasVnrArea} + 5.19529 \times \text{BsmtFinSF1} - 16.3582 \times \text{BsmtUnfSF} \\
++ 12658.92 \times \text{oc\_3} + 23951.92 \times \text{oc\_4} + 36624.84 \times \text{oc\_5} + 52863.67 \times \text{oc\_6} + 79166.05 \times \text{oc\_7} \\
++ 117691.13 \times \text{oc\_8} + 188655.41 \times \text{oc\_9} + 207986.47 \times \text{oc\_10} - 24331.98 \times \text{hs\_2} - 23028.05 \times \text{hs\_4} \\
+- 58533.55 \times \text{hs\_5} - 46629.36 \times \text{hs\_6} - 7228.92 \times \text{hs\_8}
+\end{split}$$
+
+| Source | |
+|:-:|:-:|
+| Root MSE | 33158.70 |
+| $C_p$ | 19.2110 |
+| R-Square | 0.8286 |
+| Adj. R-Square | 0.8274 |
+| AIC | 60497.5649 |
+| BIC | 60499.8969 |
+
+Table: Model Performance
+
+We generally expect that the selection method will result in selection of many
+dependent variables. We hope moving forward with the other selection methods
+that they are not as egregious with their incorporation of variables. We notice
+that of the listed models, the $C_p$ for this model, with this method, was the
+lowest of the top 5.
 
 
-proc reg data=part2 outest=rsqest;
-  model saleprice = ....../
-    selection=adjrsq aic bic;
+### Mallow's $C_p$ Selection
 
-proc print data=rsqest;
+Model Selected:
 
-proc reg data=part2;
-  model saleprice = ....../
-    selection=cp aic bic;
+$$\begin{split}
+\text{SalePrice} = 15358.36 + 69.4728 \times \text{GrLivArea} + 41.9804 \times \text{GarageArea} + 32.6848 \times \text{TotalBsmtSF} \\
+- 24.8346 \times \text{FirstFlrSF} + 16.5745 \times \text{MasVnrArea} - 20.8651 \times \text{BsmtUnfSF} + 15042.94 \times \text{oc\_4} \\
++ 27574.85 \times \text{oc\_5} + 43883.85 \times \text{oc\_6} + 70234.08 \times \text{oc\_7} + 108726.48 \times \text{oc\_8} \\
++ 179964.93 \times \text{oc\_9} + 199334.08 \times \text{oc\_10} - 24111.27 \times \text{hs\_2} - 22835.81 \times \text{hs\_4} \\
+- 58314.95 \times \text{hs\_5} - 46558.00 \times \text{hs\_6} - 7327.98 \times \text{hs\_8}
+\end{split}$$
 
+| Source | |
+|:-:|:-:|
+| Root MSE | 33158.70 |
+| $C_p$ | 18.7190 |
+| R-Square | 0.8284 |
+| Adj. R-Square | 0.8273 |
+| AIC | 60497.0985 |
+| BIC | 60499.90 |
 
-adjusted R-Squared, Mallow’s Cp, AIC, Forward, Backward and Stepwise, in six separate modeling steps
+Table: Model Performance
 
-Report summary tables for each technique
+### AIC Selection (Analyst Examination of Mallow's $C_p$ results)
 
-Did the different techniques select the same model?
+We realize that the regression procedure within SAS does not allow for selection
+by AIC criterion. We therefor examine the output of the $C_p$ selection and
+choose the model with the lowest value of AIC.
 
-Discuss any observations
+Model Selected:
 
-## If Dummy Variable Inclusion, Must Include all Dummy Variable for that Parameter
+$$\begin{split}
+\text{SalePrice} = 15358.36 + 69.4728 \times \text{GrLivArea} + 41.9804 \times \text{GarageArea} + 32.6848 \times \text{TotalBsmtSF} \\
+- 24.8346 \times \text{FirstFlrSF} + 16.5745 \times \text{MasVnrArea} - 20.8651 \times \text{BsmtUnfSF} + 15042.94 \times \text{oc\_4} \\
++ 27574.85 \times \text{oc\_5} + 43883.85 \times \text{oc\_6} + 70234.08 \times \text{oc\_7} + 108726.48 \times \text{oc\_8} \\
++ 179964.93 \times \text{oc\_9} + 199334.08 \times \text{oc\_10} - 24111.27 \times \text{hs\_2} - 22835.81 \times \text{hs\_4} \\
+- 58314.95 \times \text{hs\_5} - 46558.00 \times \text{hs\_6} - 7327.98 \times \text{hs\_8}
+\end{split}$$
+
+| Source | |
+|:-:|:-:|
+| Root MSE | 33158.70 |
+| $C_p$ | 18.7190 |
+| R-Square | 0.8284 |
+| Adj. R-Square | 0.8273 |
+| AIC | 60497.0985 |
+| BIC | 60499.90 |
+
+Table: Model Performance
+
+We had initially expected to see the AIC selection criterion result in a model
+with few parameters due to AIC formulation having a built in penalty as an
+increasing function of the number of estimated parameters. We are sadly
+disappointed an have received yet another large model.
+
+### Forward Selection
+
+Model Selected:
+
+$$\begin{split}
+\text{SalePrice} = -360.76459 + 69.68463 \times \text{GrLivArea} + 41.76716 \times \text{GarageArea} + 27.93859 \times \text{TotalBsmtSF} \\
+- 25.34106 \times \text{FirstFlrSF} + 16.33439 \times \text{MasVnrArea} + 5.28855 \times \text{BsmtFinSF1} - 16.31118 \times \text{BsmtUnfSF} \\
++ 12950 \times \text{oc\_3} + 24209 \times \text{oc\_4} + 336937 \times \text{oc\_5} + 53201 \times \text{oc\_6} + 79464 \times \text{oc\_7} \\
++ 117993 \times \text{oc\_8} + 189014 \times \text{oc\_9} + 208487 \times \text{oc\_10} + 7253.75366 \times \text{hs\_1} - 17389 \times \text{hs\_2} \\
+- 16106 \times \text{hs\_4} - 51606 \times \text{hs\_5} - 39701 \times \text{hs\_6} + 5452.76119 \times \text{hs\_7}
+\end{split}$$
+
+| Source | |
+|:-:|:-:|
+| Root MSE | 33160.21 |
+| $C_p$ | 20.4741 |
+| R-Square | 0.82862 |
+| Adj. R-Square | 0.82737 |
+| F Value | 663.78 |
+| AIC | 60498.82 |
+| BIC | 60501.18 |
+
+Table: Model Performance
+
+### Backward Selection
+
+Model Selected:
+
+$$\begin{split}
+\text{SalePrice} = 210542.11 + 669.0064 \times \text{GrLivArea} + 41.9546 \times \text{GarageArea} + 32.9086 \times \text{TotalBsmtSF} \\
+- 24.8742 \times \text{FirstFlrSF} + 16.5710 \times \text{MasVnrArea} - 21.1202 \times \text{BsmtUnfSF} - 218229 \times \text{oc\_1} \\
+- 205920.52 \times \text{oc\_2} - 196002 \times \text{oc\_3} - 184601 \times \text{oc\_4} - 172059 \times \text{oc\_5} - 155840 \times \text{oc\_6} \\
+- 129483 \times \text{oc\_7} - 90909 \times \text{oc\_8} - 19592 \times \text{oc\_9} + 5212 \times \text{hs\_1} - 18991 \times \text{hs\_2} \\
+- 17496 \times \text{hs\_4} - 52459 \times \text{hs\_5} - 41077 \times \text{hs\_6}
+\end{split}$$
+
+| Source | |
+|:-:|:-:|
+| Root MSE | 33171.58 |
+| $C_p$ | 21.4498 |
+| R-Square | 0.82844 |
+| Adj. R-Square | 0.82725 |
+| F Value | 696.34 |
+| AIC | 60499.82 |
+| BIC | 60502.12|
+
+Table: Model Performance
+
+### Stepwise Selection
+
+Model Selected:
+
+$$\begin{split}
+\text{SalePrice} = 10670.55 + 68.9622 \times \text{GrLivArea} + 42 \times \text{GarageArea} + 33.0526 \times \text{TotalBsmtSF} \\
+- 24.7990 \times \text{FirstFlrSF} + 16.5238 \times \text{MasVnrArea} - 21.0767 \times \text{BsmtUnfSF} \\
++ 15150 \times \text{oc\_4} + 27671 \times \text{oc\_5} + 43855 \times \text{oc\_6} + 70189 \times \text{oc\_7} + 108725 \times \text{oc\_8} \\
++ 179998 \times \text{oc\_9} + 199501 \times \text{oc\_10} + 5102 \times \text{hs\_1} - 18928 \times \text{hs\_2} - 17456 \times \text{hs\_4} \\
+- 52435 \times \text{hs\_5} - 41063 \times \text{hs\_6}
+\end{split}$$
+
+| Source | |
+|:-:|:-:|
+| Root MSE | 33172.66 |
+| $C_p$ | 19.6388 |
+| R-Square | 0.82831 |
+| Adj. R-Square | 0.82724 |
+| F Value | 773.54 |
+| AIC | 60498.02 |
+| BIC | 60500.27 |
+
+Table: Model Performance
+
+We'll make a table to compare the model performance information
+
+| Model | Cont. | Ind. |Root MSE | $C_p$ | R-Square | Adj. R-Square | F Value | AIC | BIC |
+|:---------------:|:-------:|:------:|:--------:|:-----:|:--------:|:-------------:|:-------:|:---:|:---:|
+| Adj. R-Square | 7 | 13 | 33158.70 | 19.2110 | 0.8286 | 0.8274 | - | 60497.5649 | 60499.8969 |
+| Mallow's $C_p$ | 6 | 12 | 33158.70 | 18.7190 | 0.8284 | 0.8273 | - | 60497.0985 | 60499.90 |
+| AIC |  6 | 12 | 33158.70 |18.7190 | 0.8284 | 0.8273 | - | 60497.0985 | 60499.90 |
+| Forward | 7 | 14 | 33160.21 | 20.4741 | 0.82862 | 0.82737 | 663.78 | 60498.82  | 60501.18 |
+| Backward | 6 | 14 | 33171.58 | 21.4498 | 0.82844 | 0.82725 | 696.34 | 60499.82 | 60502.12 |
+| Stepwise | 6 | 12 | 33172.66 | 19.6388 | 0.82831 | 0.82724 | 773.54 | 60498.02 | 60500.27 |
+
+It seems relevant to mention that models which incorporate more parameters
+become more complex for interpretation. Going into the variable selection, we
+had anticipated that Mallow's $C_p$ and AIC would result in models of greatly
+reduced complexity (parameters), however the results show that these models all
+performed well by incorporating almost all of the continuous variables in them.
+
+For Mallow's $C_p$ and AIC, we received the same results because we were looking
+to minimize AIC. The Mallow's $C_p$ method found the models with the lowest AIC,
+so we naturally used that same model for the AIC selection criteria.
+
+In terms of an interpretable model, we're not a fan of our initial selection of
+OverallQual based solely on correlation criteria. This variable is large (10-way
+Lickert) and now that we've performed automated variable selection we'll have to
+incorporate it into our ultimate model. There is some concern that OverallQual
+is a subjective categorical measurement, as opposed to HouseStyle which is an
+observable categorical measurement. This likely means that we are vectoring
+towards building a model that will be more useful for inference than prediction.
+we say this because in sample we have observations of OverallQual, but out-of-
+sample there is no systematic way of observing and characterizing OverallQual,
+this is something obtained through the survey methodology.
+
+## Indicator Variable Inclusion
 
 Select one of the six models that incorporated a dummy variable, refit the model
 after adding in the other dummy variables from that parameter
@@ -436,6 +637,11 @@ What were the challenges within this data set?
 
 What are the recommendations for improving prediction accuracy
 
+
+Notes on choosing OverallQual
+ - stuborness isn't good as an analyst, be ready to be flexible
+ - A subjective rating, instead of a measured categorical value, is likely better for inference rather than predection
+ - Wouldn't a better method be to do variable selection without categorical variables and then add them once you found a 'good' model?
 
 # Procedures
 

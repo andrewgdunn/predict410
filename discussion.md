@@ -294,3 +294,86 @@ One proposed method of identifying an outlier is that if your model increases in
 performance once that observation is removed it can be considered an outlier.
 
 [^0]: gung, "Rigorous Definition of an Outlier", 2011. [Online]. Available: http://stats.stackexchange.com/questions/7155/rigorous-definition-of-an-outlier/20197#20197
+
+# Week 5
+
+## Adjusted R-Squared, AIC, BIC, and Mallow’s Cp
+What are the adjusted R-squared, AIC, BIC, and Mallow’s Cp metrics? How can we
+use these metrics in the modeling process, and what advantage do they have over
+the R-squared metric? Are there any other metrics that we should consider in
+this discussion?
+
+__Response__:
+
+Each of these are methods that can be used to calculate criteria for evaluating
+regression models [^0]. These methods calculate criteria that can be used as a
+'fitness' of the regression model it's calculated from. The relatively 'fitness'
+provides criteria for model comparison, and as such can be used for model
+selection methods. Each method provides criterion that elicits different
+characteristics about a model. We've already learned that R-Square, and Adj.
+R-Square will always increase as regressors are added to the model, the other
+criterion calculations don't all have the same flaw. (If the number of
+regressors is fixed between models, its not necessarily a flaw).
+
+[^0]: Montgomery, D. C., Peck, E. A., & Vining, G. G. (2012). Introduction to linear regression analysis (Vol. 821). John Wiley & Sons.
+
+## Forward, Backward, and Stepwise Variable Selection
+Consider the automated variable selection procedures of forward, backward, and
+stepwise variable selection. How do these automated variable selection
+procedures select which variables to keep and which variables to discard? Be
+specific. What are the statistical fundamentals of each of these algorithms?
+
+Should any method be generally preferred over the others? Are there scenarios
+where one method should be preferred over the other?
+
+__Response__:
+
+It is typically computationally expensive, or even intractable (greater than
+time available) to evaluate an entire design space of regression models. Methods
+have been developed for evaluating only a small subset of the model design space
+by either adding or deleting regressors one at a time [^0]. These methods are
+typically referred to as stepwise-type-procedures.
+
+_Forward selection_, which involves starting with no variables in the model,
+testing the addition of each variable using a chosen model comparison criterion,
+adding the variable (if any) that improves the model the most, and repeating
+this process until none improves the model [^1].
+
+_Backward elimination_, which involves starting with all candidate variables,
+testing the deletion of each variable using a chosen model comparison criterion,
+deleting the variable (if any) that improves the model the most by being
+deleted, and repeating this process until no further improvement is possible
+[^1].
+
+_Stepwise regression_, introduced in [^2], is a modification of forward
+selection in which at each step all regressors entered into the model previously
+are reassessed via their partial F statistics [^0]. A regressors added at an
+earlier step may now be redundant because of the relationships between it and
+regressors now incorporated into the model.
+
+There is a reason that stepwise regression is considered to be popular, by
+taking into account the possibility that a regressor might become redundant and
+removing it from the model it doesn't settle into local minima as early within
+its design space search.
+
+[^0]: Montgomery, D. C., Peck, E. A., & Vining, G. G. (2012). Introduction to linear regression analysis (Vol. 821). John Wiley & Sons.
+[^1]: Stepwise regression. (2014, June 27). In Wikipedia, The Free Encyclopedia. Retrieved 00:28, May 3, 2015, from http://en.wikipedia.org/w/index.php?title=Stepwise_regression&oldid=614585833 
+[^2]: Efroymson, M. A. "Multiple regression analysis." Mathematical methods for digital computers 1 (1960): 191-203.
+
+## Determining the Importance of a Predictor Variable
+How should we determine the importance of a predictor variable? If an automated
+variable selection algorithm selects a variable is it important? (What does it
+mean for a variable to be important?)
+
+One type of importance is “statistical significance”. What does it mean for a
+predictor variable to be statistically significant? (Be very specific.) Does
+statistical significance translate to predictive accuracy? Explain.
+
+__Response__:
+
+Automated variable selection selects components based on the criteria that the
+variable selection procedure is designed or instructed to operate on. A variable
+can be valuable from an explanatory perspective, but not statistically
+significant. An example would be selection based on information loss criteria
+(AIC), which is a tradeoff between goodness-of-fit and model complexity, a
+variable selected with this criterion could not be statistically significant.
