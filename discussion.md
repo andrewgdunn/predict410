@@ -377,3 +377,99 @@ can be valuable from an explanatory perspective, but not statistically
 significant. An example would be selection based on information loss criteria
 (AIC), which is a tradeoff between goodness-of-fit and model complexity, a
 variable selected with this criterion could not be statistically significant.
+
+# Week 6
+
+## Multicollinearity
+Multicollinearity is always a relevant issue when building models in industry.
+Let’s take some time to understand what multicollinearity is, how we detect it,
+and how we can mitigate it.
+
+    What is multicollinearity?
+    How do we detect multicollinearity?
+    How can we mitigate or remedy multicollinearity?
+    Is multicollinearity a statistical issue or a linear algebra issue?
+
+__Response__:
+
+Multicollinearity, or near-linear dependence, is When two or more predictor
+variables in multiple regression are highly correlated, meaning that one can be
+linearly predicted from the others with a non-trivial degree of accuracy [^0].
+The same resource [^0] provides a list of detection criteria, here we re-state
+some from their list:
+
+ - Large changes in the estimated regression coefficients when a predictor variable is added or deleted
+ - Insignificant regression coefficients for the affected variables in the multiple regression, but a rejection of the joint hypothesis that those coefficients are all zero (using an F-test)
+ - If a multivariable regression finds an insignificant coefficient of a particular explanator, yet a simple linear regression of the explained variable on this explanatory variable shows its coefficient to be significantly different from zero, this situation indicates multicollinearity in the multivariable regression.
+
+[^1] is one of the Authors that propose formal detection-tolerance based on the
+variance inflation factor.
+
+One method is to begin dropping variables to improve the coefficients of the
+model. Dropping a variable means you're loosing information for the model, if
+you choose a variable that is 'relevent' (may not be possible not to) the model
+will result in biased coefficient estimates for the remaining explanatory
+variables, as they are correlated to some degree with the dropped variable.
+
+Principal Components analysis as a preconditioner for regression analysis can
+initially reduce the independent variables.
+
+Multicollinearity is an issue that manifests within multiple regression models,
+however it can be expressed and examined in closed form with linear algebra. 
+
+[^0]: Multicollinearity. (2015, April 28). In Wikipedia, The Free Encyclopedia. Retrieved 15:00, May 9, 2015, from http://en.wikipedia.org/w/index.php?title=Multicollinearity&oldid=659714193 
+[^1]: Montgomery, D. C., Peck, E. A., & Vining, G. G. (2012). Introduction to linear regression analysis (Vol. 821). John Wiley & Sons.
+
+## Principal Components Analysis
+What are two benefits of using Principal Components Analysis (PCA)? Are there
+any limitations to using PCA?
+
+__Response__:
+
+PCA has widespread applications because it reveals simple underlying structures
+in complex data sets using analytical solutions from linear algebra [^1]. A
+primary benefit of PCA arises from quantifying the importance of each dimension
+for describing the variability of a data set. PCA can be used as a method to
+create a reduced rank approximation to the covariance structure, i.e. it can be
+used to approximate the variation in p predictor variables using k < p principal
+components. This is commonly referred to as dimensionality reduction.
+
+PCA is sensitive to the scale of the data. Many software tools will internally
+scale/standardize our data, however one must be aware. There has been a proposed
+scale independent algorithm to perform PCA [^0]. There is also some limitations
+within the fundamental formulation of the methodology, where first PCA explores
+a vector, the next vector is required to be orthogonal to the first [^1].
+
+[^0]: Leznik, M., & Tofallis, C. (2005). Estimating invariant principal components using diagonal regression.
+[^1]: Shlens, J. (2014). A tutorial on principal component analysis. arXiv preprint arXiv:1404.1100.
+
+## Selecting the Number of Principal Components
+Given a set of eigenvalues: 7.2 6.1 4.3 2.2 1.4 1.3 0.8 0.1, how many principal
+components should we keep, and what is the cumulative percent of the total
+variation captured by the principal components that we will keep? Explain your
+decision rule. Is this the only decision rule or are there other decision rules
+that could be considered?
+
+What options are available in SAS to help us make this decision?
+
+__Response__:
+
+We will first calculate the total variance explained by the set of eigenvalues:
+
+7.2 + 6.1 + 4.3 + 2.2 + 1.4 + 1.3 + 0.8 + 0.1 = 23.4
+
+7.2 / 23.4 = 0.307692307692
+6.1 / 23.4 = 0.260683760684
+4.3 / 23.4 = 0.183760683761
+2.2 / 23.4 = 0.0940170940171
+1.4 / 23.4 = 0.0598290598291
+1.3 / 23.4 = 0.0555555555556
+0.8 / 23.4 = 0.034188034188
+0.1 / 23.4 = 0.0042735042735
+
+We can observe from this that the first three principal components account for
+75.21 percent of the variation within our data set. If we had some arbitrary
+threshold to achieve an over 80 percent, then we could take the first four
+principal components for 84.61 percent. Our decision rule could be based on a
+threshold, on the graph shape (plotting the variation explanation), or a desire
+to reduce to the minimum possible variables.
