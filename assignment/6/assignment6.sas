@@ -15,7 +15,7 @@ data temp;
   set temp;
 
   * Compute the log-returns - log of the ratio of today's price to yesterday's price;
-  * Note that the data needs to be sorted in the correct
+  * Note that the data needs to be sorted in the correct 
     direction in order for us to compute the correct return;
   return_AA  = log(AA/lag1(AA));
   return_BAC = log(BAC/lag1(BAC));
