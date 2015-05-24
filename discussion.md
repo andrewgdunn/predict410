@@ -473,3 +473,60 @@ threshold to achieve an over 80 percent, then we could take the first four
 principal components for 84.61 percent. Our decision rule could be based on a
 threshold, on the graph shape (plotting the variation explanation), or a desire
 to reduce to the minimum possible variables.
+
+# Week 7
+
+## Exploratory Factor Analysis
+What are two benefits of using Exploratory Factor Analysis (EFA)? Are there any
+limitations to using EFA?
+
+__Response__:
+
+Factor analysis can elicit an unobserved relationship that the analyst thinks
+may be occurring between variables. Factor analysis can also facilitate
+dimension reduction from observed measurement variables to a smaller set of
+unobserved latent variables. Some methods of factor analysis can provide metrics
+for model goodness-of-fit. Factor analysis requires our data to all have the
+same scaling.
+
+## Factor Rotations
+What role do factor rotations play in Factor Analysis? What does it mean to be
+an “orthogonal” rotation? What does it mean to be an “oblique” rotation? What
+are examples of each of these rotation types? Should one type of rotation be
+preferred over the other in all occasions, or does it depend on the application,
+or the data? Explain.
+
+__Response__:
+
+Factor rotations are a method to improve interpretation of the factor structure.
+
+ - __Orthogonal__ rotations will yield orthogonal factors after the rotation. The most common orthogonal rotation is the __Varimax__ rotation.
+ - __Oblique__ rotations will yield correlated factors after the rotation. The most common oblique rotation is the __Promax__ rotation.
+
+In practice, decisions or rotations are are subjective and considered to be the
+analysts prerogative.
+
+
+## Selecting the Number of Factors
+How do we select the “proper” number of factors to keep when using Factor
+Analysis? Is there a simple rule for making this decision, or are there multiple
+rules that could be considered?
+
+What options are available in SAS to help us make this decision?
+
+__Response__:
+
+Once a method of fitting the common factor model is selected, the important
+decision for the analyst is choosing the amount of factors within the model. [^0]
+states: "This decision has long been recognized as one of the great challenges
+facing researchers when conducting EFA...". [^0] further states that there is a
+wealth of literature for methodologies of choosing factors. [^0] goes on to list
+many criteria, such as eigenvalues-greater-than-one-rule, scree plot, Horn's
+parallel analysis, and several more.
+
+Within SAS, there are several methods to invoke selection criteria for factors,
+[^1] discusses Kaiser-Guttman, Percentage of Variance, and Scree Test.
+
+
+[^0]: Fabrigar, Leandre R., and Duane T. Wegener. Exploratory factor analysis. Oxford University Press, 2011.
+[^1]: http://www.ats.ucla.edu/stat/sas/library/factor_ut.htm

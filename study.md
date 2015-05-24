@@ -496,7 +496,7 @@ Notes below are from the following sources; [@bhattipca]
  - Compute the eigenvalue-eigenvector pairs $(\lambda_1, e_1), \ldots, (\lambda_p, e_p)$ of the square matrix $X^TX$ where the eigenvalues are ordered largest to smallest such that $\lambda_i > \lambda_j$ for $i > j$.
  - Your software will compute the eigenvalue-eigenvector pairs using a matrix factorization called Singular Value Decomposition or SVD.
  - Compute the principal components $Z_1, \ldots, Z_p$ using the eigenvalues as the component loadings
- - In vector format we can compute each component individuall $$Z_i = X \times e_i$$ or we can compute all of the principal components using one matrix computation $$[Z_1, \ldots, Z_p] = X \times [e_1, \ldots, e_p]$$.
+ - In vector format we can compute each component individual $$Z_i = X \times e_i$$ or we can compute all of the principal components using one matrix computation $$[Z_1, \ldots, Z_p] = X \times [e_1, \ldots, e_p]$$.
 
 ## How many principal components should we use?
 
@@ -511,6 +511,281 @@ Notes below are from the following sources; [@bhattipca]
  - Frequently the scree plot will present some ambiguity in the number of components to keep, e.g. should I keep four or five principle components?
  - The 'correct' number of principal components to keep will depend on the application. If you are using PCA as a preconditioner for regression analysis or cluster analysis, then the effectiveness of these applications under the alternate choices would determine which number is the best to keep. In this sense the unsupervised learning problem has been transformed into a supervised learning problem.
  - If the PCA is not directly tied to any application, then the choice of the number of components to keep is always heuristic. Formal inference for the number of components is available under a multivariate normal distribution assumption.
+
+
+# Exploratory Factor Analysis
+Notes below are from the following sources; [@bhattiefa]
+
+ - Factor analysis is a statistical modeling technique used to model the covariance structure in multivariate data.
+ - Factor analysis is a statistical modeling technique for estimating unobserved (or latent) relationships using observed (or measured) variables.
+ - As a statistical modeling technique, factor analysis has statistical assumptions
+
+## Why do we use Factor Analysis
+
+ - We use FA to model the correlation structure in a set of measured variables.
+     + If your data is properly scaled the covariance matrix and correlation matrix are the same matrix.
+ - We use FA to facilitate a dimension reduction from the observed measurement variables to the smaller set of unobserved latent factors.
+ - We use FA to improve the interpretability of our multivariate data.
+
+## When should we use Factor Analysis
+
+Factor analysis is most useful on problems that are 'natural factor analysis
+problems'. It would be rare to use factor analysis on a bunch of random data
+that was just pulled without obtaining understanding of the data space. In that
+matter Factor Analysis is very different than Principal Components Analysis. You
+can apply PCA to any data that is continuous or approximately continuous.
+
+ - All variable names are known, i.e. we know and understand all of the measurement variables
+ - All measurement variables have been purposely selected under the guidance that they represent a measurement of a quality or trait that is recognized as important but that cannot be directly measured.
+ - We are able to obtain multiple measurements for each of the unmeasurable qualities (the latent factors).
+
+## Examples of Natural Factor Analysis Problems
+
+ - Measurement of physical attributes: speed, strength, agility
+ - Measurement of educational attainment: math, reading, problem solving
+ - Measurement of personality: rational, social, empathetic
+
+The discipline of psychology uses factor analysis a lot. You can find many
+examples of factor analysis in psychometric literature.
+
+## Exploratory versus Confirmatory Factor Analysis
+
+ - EFA is performed when we have no preconceived notions about the factor structure (i.e. the factor loadings) that may exist in a set of multivariate data. Since we have no preconceived notions of the factor structure, we are performing an exploratory data analysis, hence the name exploratory factor analysis.
+ - CFA is performed when we want to statistically test a specific factor structure. CFA will require the formal statistical assumptions of maximum likelihood estimation so that formal statistical inference can be applied to the data to draw statistical conclusions. CFA is related to other topics such as path analysis and simultaneous equations.
+
+## How does Factor Analysis Differ from Principal Components Analysis?
+
+ - FA is a statistical model while PCA is not.
+ - FA is a statistical model for the correlation structure in a multivariate data. PCA is not a model for the correlation structure. PCA is a rotation of the coordinate axes.
+ - FA is focused on producing a representation of the correlation structure that will provide an enhanced data interpretation.
+ - PCA can be used with anonymized variables, ie.e. data with no known names, while FA requires well defined and known variables. FA is more subjective than PCA, and also more focused on interpretability than PCA, and hence FA is difficult to use with a larger number of variables or anonymized variables.
+
+## A Modeling Process for Factor Analysis
+
+ - Since we are focused on statistical modeling, and not statistical theory, we will approach factor analysis from the modeling perspective.
+ - How do we define a modeling process for factor analysis?
+ - How different or similar will our modeling process for factor analysis be to our standard linear models approach?
+
+## A Strategy for Performing a Factor Analysis
+
+ - Perform a Principal Factor Analysis with a Varimax rotation.
+ - Perform an iterative Principal Fator Analysis with a Varimax rotation.
+ - Performa Maximum Liklihood Factor Analysis with a Varimax rotation.
+ - Compare the solutions from these three factor analyses:
+     + Did each factor analysis yield roughly the same factor loadings?
+     + Is one set of factors more interpretable than the other set?
+ - Evaluate the factor loadings over a range of _common factors_, i.e. instead of just looking at the results for $k = 4$ also consider values for $k$ in ${2,3,4,5,6}$.
+ - If you have enough data, then evaluate your prospective factor loadings through bootstrapping or cross validation. As with any statistical relationship, for that relationship to represent a 'universal truth', then it must exist in many samples. We can effectively construct this ideal situation by employing either of these methods.
+
+This strategy has been adapted from the advice provided in [@johnson1992applied].
+
+## Common Factor Model: General Assumptions
+
+ - Let $X_1, X_2, \ldots, X+p$ be observable random variables. In the context of FA we will call these variables the response variables.
+     + These are the variables for which we will try to model the correlation structure.
+ - Let $f_i$ denote an unobservable concept called a common factor.
+ - Let $\lambda_{ij}$ denote the factor loading for the $j$th common factor $f_j$ on the $i$th response $X_i$. Note that the factor loading $\lambda_{ij}$ represents the correlation between the common factor $f_j$ and the response variable $X_i$.
+ - Let $u_j$ be the _specific error_ or _unique factor_.
+ - In factor analysis we assume that each response $X_i$ can be deconstructed into a set of _common factors_ $f_1, f_2, \ldots, f_k$ and a _unique factor_ $u_i$.
+
+## Thurstone's Common Factor Model
+
+The Common Factor Model is defined by the following relationships:
+
+$$ X_1 = \lambda{11}f_1 + \lambda{12}f_2 +, \ldots + \lambda{1k}f_k + u_1$$
+$$ X_1 = \lambda{21}f_1 + \lambda{22}f_2 +, \ldots + \lambda{2k}f_k + u_2$$
+$$ X_1 = \lambda{p1}f_1 + \lambda{p2}f_2 +, \ldots + \lambda{pk}f_k + u_p$$
+
+ - Each response variable $X_i$ is assumed to be related to the unobserved factors $f_j$ through a linear equation with the coefficients (factor loadings) given by $\lambda_{ij}$. Since the relationship will not be exact, each linear equation has a response specific error called the _unique factor_ or _specific error_.
+ - The factors $f_1, f_2, \ldots, f_k$ are called _common factors_ because they are common to all of the response variables $X_1, X_2, \ldots, X_p$.
+ - The relationship between the response variables $X_i$ and the _common factors_ $f_j$ looks very similar to an OLS regression model, except the common factors are not directly observable (measurable).
+
+ - Let's make sure we remember the objective of factor analysis. Specifically, we do not want to be able to reproduce the response variables $X_i$. When using factor analysis, we want to model the correlation structure of the response variables.
+ - How doe we define the correlation structure? We can describe the correlation structure of a multivariate data using either the correlation matrix or the covariance matrix.
+ - We can use the Common Factor Model defined above in matrix format: $$\mathbf{X = \Lambda f + u}$$
+ - From this matrix representation of the Common Factor Model we can then define the covariance matrix with some additional statistical assumptions.
+ - Note: In theoretical discussions we discuss the correlation structure using the covariance matrix. However, in practice we use the correlation matrix. When the data are standardized these matrices are the same. When we perform data analysis, we (our software) will standardize the data in order to make these matrices the same.
+ - It might help to think of the matrix $\mathbf{\Sigma}$ as the covariance matrix for standardized data so that it can be interpreted as a correlation matrix.
+
+## Needed Additional Assumptions
+
+To define the correlation structure we need some additional assumptions.
+
+ - The unique (specific) factor $u_i$ has the unique (specific) variance $\psi_i$, i.e. $\mathrm{Var}(u_i) = \psi_i$.
+ - The common factors $f_j$ are mean zero, variance 1, and independent of each other, ie.e $f_n$ and $f_m$ are independent for all $n$ not equal $m$.
+ - The unique (specific) factors and the common factors are independent of eachother, i.e. $u_i$ and $f_i$ are independent for all $i$ and $j$.
+
+## Defining the Correlation Structure
+
+Using the additional statistical assumptions we can define the correlation
+structure for the matrix $\mathbf{X}$.
+
+\begin{equation}
+\begin{split}
+\mathrm{Cov}(\mathbf{X}) & = \mathrm{Cov}(\mathbf{\Lambda}f + u) \\
+& = \mathrm{Cov}(\mathbf{\Lambda}f) + \mathrm{Cov}(u) \\
+& = \mathbf{\Lambda}\mathrm{Cov}(f)\mathbf{\Lambda^T} + \mathrm{Cov}(u)
+\end{split}
+\end{equation}
+
+This relationship yields the commonly displayed correlation structure:
+
+$$\mathbf{\Sigma = \Lambda\Lambda_T + \Psi}$$
+
+Where:
+$$
+\mathbf{\Lambda} = \begin{bmatrix}
+                        \lambda_{11} & \ldots & \lambda_{1k}\\
+                        \vdots & \ldots & \vdots\\
+                        \lambda_{p1} & \ldots & \lambda_{pk}\\
+                   \end{bmatrix}
+$$ and $$
+\mathbf{\Psi} = \begin{bmatrix}
+                    \psi_1 & 0 & \ldots & 0 & 0\\
+                    0 & \psi_2 & 0 & \ldots 0\\
+                    \vdots & \ldots & \ldots & \ldots & \vdots\\
+                    0 & 0 & 0 & 0 & \psi_p
+                \end{bmatrix}
+$$
+
+## Correlation Components
+
+The covariance matrix $\mathbf{\Sigma}$ has several components and related quantities of
+interest.
+
+ - The diagonal entries of the covariance matrix are individual variance terms. $$\sigma_i^2 = \lambda_{i1}^2 + \ldots + \lambda_{ip}^2 + \psi_i$$
+ - The sum of the squared factor loadings is called the _common variance_ or the communality and typically denotd by $h_i^2$. $$h_i^2 = \lambda_{i1}^2 \ldots + \lambda_{ik}^2$$
+ - The term $\psi_i$ is called the _unique_ (specific) variance.
+ - The covariance between $X_i$ and $X_j$ is given by $$\sigma_{ij} = \sum_{n=1}^k\lambda_{in}\lambda_{jn}$$
+
+## How do we estimate the Factor Loadings?
+
+The correlation structure $$\mathbf{\Sigma = \Lambda\Lambda_T + \Psi}$$ has only
+one estimatable qunatity and two unknowns. How can we estimate the factor
+loadings $\mathbf{\Lambda}$?
+
+We can estimate $\mathbf{\Sigma}$ from the data. If we had an estimate for
+$\mathbf{\Psi}$ then we could estimate the __reduced covariance matrix__
+$$\mathbf{\hat{\Sigma} - \hat{\Psi} = \hat{\Lambda}\hat{\Lambda}^T}$$
+
+How do we estimate $\mathbf{\Psi}$? Instead of estimating $\mathbf{\Psi}$
+directly, most algorithms initiate the estimation with an estimate of the
+reduced covariance matrix $\mathbf{\hat{\Sigma} - \hat{\Psi}}$, and then back
+out estimates for $\mathbf{\Psi}$.
+
+We estimate the reduced covariance matrix $\mathbf{\hat{\Sigma} - \hat{\Psi}}$
+by computing the estimated covariance matrix $\mathbf{\hat{\Sigma}}$ and
+replacing the 1's on the diagonal with $\hat{h_1} - \hat{h_k}$ for a $k$ factor
+model. These estimates $\hat{h_i}$ are called the __prior communality
+estimates__.
+
+## Estimating the Reduced Covariance Matrix
+
+There are two common methods for estimating the reduced covariance matrix
+$\mathbf{\hat{\Sigma} - \hat{\Psi}}$.
+
+ - The most common estimation procedure is to replace the diagonal of the estimated covariance matrix with the Square Multiple Correlation coefficients (the SMC priors option in SAS). Note that the Square Multiple Correlation coefficient is the R-Squared value from regressing one $X_i$ on all of the other $X_j$.
+ - The other option is to replace the diagonal of the estimated covariance matrix with the absolute value of the maximum correlation coefficient for that row (The MAX priors option in SAS).
+
+In either case the factor loadings are then computed by performing Principal
+Components Analysis (as a matrix factorization technique) on the reduced
+covariance matrix. This estimation technique is referred to as the _Principal
+Factor Analysis_.
+
+## Iterative Principal Factor Analysis
+
+ - Iterative Principal Factor Analysis uses an updated estimate for $\mathbf{\Psi}$ at each interaction.
+ - After any iteration we can compute $$\hat{\Psi} = \mathbf{\hat{\Sigma} - \hat{\Lambda}\hat{\Lambda}^T}$$ After updating the estimate $\mathbf{\Psi}$, the algorithm will recompute the factor loadings using the new reduced covariance matrix until the factor loadings 'stabilize'.
+ - When Principal Factor Analysis is computed using an iterative estimate for the $\mathbf{\Psi}$, the procedure is called _Iterative Principal Factor Analysis_.
+
+## Maximum Likelihood Factor Analysis
+
+ - Maximum Likelihood Factor Analysis is the statistical approach to factor analysis. The response varaibles $X_i$ are assumed to have a multivariate normal distribution, and hence the covariance matrix $\mathbf{\Sigma}$ is assumed to have a Wishart distribution.
+ - Principal Factor Analysis and Iterative Principal Factor Analysis are not formal statistical models. They are not estimated from a likelihood function, and hence they do not have an means of formal inference.
+ - Maximum Likelihood Factor Analysis is the only formal estimation procedure for factor analysis, and hence the only estimation procedure with formal inference for factor loadings (confidence intervals) and statistical tests for goodness-of-fit.
+ - Inference includes a formal test of model adequacy for the number of factors and the use of AIC as a means of model selection for the number of factors.
+
+## Model Goodness-Of-Fit
+
+What does it mean for a factor model to fit well?
+
+ - Unfortunately, in practice the goodness-of-fit of a factor model is typically completely determined by its interpretability.
+ - All communality estimates should be less than 1, i.e. no Heywood cases.
+     +  “Heywood cases” [are] negative estimates of variances or correlation estimates greater than one in absolute value..."
+     +  From publication [@heywood1931finite]
+ - Factor loadings should exhibit a _simple factor structure_. This is ideal, but seldom hold in practice.
+ - Objective Cririques of Fit:
+     + Small residual matrix: The estimated matrix $\mathbf{\hat{\Psi}}$ can be interpreted as a residual matrix. Componentwise metrics (matrix norms) such as Mean Absolute Error (MAE) and Mean Square Error (MSE) can be used to compare different factor models for a relative fit.
+     + Statistical Inference: Use MLE and statistical inference to justify your factor model.
+
+## Caveats of Goodness-Of-Fit for Factor Analysis
+
+ - Without MLE all GOF is subjective, or at least relative.
+ - Using MLE requires the assumption of multivariate normality. This assumption is difficult to validate from the model. One would have to validate the assumption prior to using ML FA by looking at the marginal distributions.
+ - Software will frequently output estimates for the Heywood case, and some people will use this output. The validity of the output in the Heywood case will be contentious.
+ - One item that tends to be lost in the discussion of GOF is the overall legitimacy of your factor relationships. Ar ethey real, i.e. would they be apparent across many samples? Or are they sample specific, i.e. do they just happen to show in your sample? More importantly, did you deviate your sample from a random sample and generate a spurious relationship?
+
+## Factor Rotations
+
+Factor rotations are a common practice in factor analysis. There are two types
+of factor rotations: (1) orthogonal rotations and (2) oblique rotations.
+
+ - __Orthogonal__ rotations will yield orthogonal factors after the rotation. The most common orthogonal rotation is the __Varimax__ rotation.
+ - __Oblique__ rotations will yield correlated factors after the rotation. The most common oblique rotation is the __Promax__ rotation.
+
+Item to note:
+
+ - Factor rotations do not improve the 'fit' of the factor model, only the factor interpretation. Factor rotations are used as a means to obtain a 'simple structure', and hence be more interpretable.
+ - After applying an oblique rotation the loadings matrix no longer represents the correlation structure between the observed variables and the unobserved factors.
+
+## Rotations to Simple Structure
+
+The primary reason to employ a factor rotation is to improve the interpretation
+of the factor structure by rotating to a __simple structure__.
+
+ - Each row of $\mathbf{\Lambda}$ should contain at least one zero.
+ - Each column of $\mathbf{\Lambda}$ should contain at least $k$ zeros for a $k$ factor model. Ideally, the factor grouping of the response variables is clearly identifiable.
+ - When comparing pairs of columns from $\mathbf{\Lambda}$, the pairs should have some elements that are zero in one column but nonzero in the other column. Again, ideally the factor groupings of the response variables are identifiable and unique to a group.
+
+In practice simple factor structures are difficult to obtain. The user can try to fit simple factor structures through factor rotations and/or the inclusion or exclusion of response variables. In practice all of these decisions are subjective and considered to be the user's prerogative.
+
+This advice been adapted from [@morrison1990multivariate]
+
+## Caveats and Potential Shortcomings of Factor Analysis
+
+ - The common factor model is an _underdetermined_ model (more unkowns than equations), and hence it has multiple solutions instead of a single unique solution. The existence of multiple solutions in any problem always causes confusion.
+ - Factor analysis will only work on a problem that is a 'factor analysis problem', i.e. one where the user have performed a set of measurements that are intended to be related, i.e. measure an underlying concept. In this sense FA is not a general method for dimension reduction.
+ - In practice your factor analysis results will never be as 'nice' as you think they should be.
+
+## Relationship Between the Covariance Matrix and the Correlation Matrix
+
+Throughout the notes we have referenced the covariance matrix $\mathbf{\Sigma}$
+and its estimate $\mathbf{\hat{\Sigma}}$ (denoted by $\mathbf{S}$ in some
+books). When your data are centered and scaled, then the covariance matrix and
+the correlation matrix are the same matrix. Hence, when your data are not
+standardized, the difference between the correlation matrix is a scaling matrix.
+
+ - For two random variables $X_1$ and $X_2$ with standard deviations $\sigma_1$ and $\sigma_2$ we have: $$\mathrm{Corr}(X_1, X_2) = \frac{\mathrm{Cov}(X_1, X_2)}{\sigma_1\sigma_2}$$
+ - Let $\mathbf{R}$ denote the correlation matrix. Consider the matrix representation of the problem for two random variables $X_1$ and $X_2$: $$\mathbf{R} = \begin{bmatrix}
+                                                                                                                                                                    \frac{\mathrm{Cov}(X_1, X_1)}{\sigma_1^2} & \frac{\mathrm{Cov}(X_1, X_2)}{\sigma_1\sigma_2}\\
+                                                                                                                                                                    \frac{\mathrm{Cov}(X_2, X_1)}{\sigma_2\sigma_1} & \frac{\mathrm{Cov}(X_2, X_2)}{\sigma_2^2}
+                                                                                                                                                               \end{bmatrix}$$
+ - In terms of $\mathbf{\Sigma}$ we can write $\mathbf{R}$ as: $$\mathbf{R} = \text{diag}(\mathbf{\Sigma})^{-\frac{1}{2}} \times \mathbf{\Sigma} \times \text{diag}(\mathbf{\Sigma})^{-\frac{1}{2}}$$
+ - Since diagonal matrices are always invertible, any relationship specified with a covariance matrix could be respecified with a correlation matrix using an algebraic substitution. However, in practice we would simply perform factor analysis on the correlation matrix (or the software would do this automatically).
+ - Remember, although we presented all of the technical details in terms of the covariance matrix, in practice we are modeling the correlation matrix, and we are trying to find a factor structure to describe and reproduce the correlation matrix.
+
+## Review: A Strategy for Performing a Factor Analysis
+
+ - Perform a Principal Factor Analysis with a Varimax rotation.
+ - Perform an iterative Principal Fator Analysis with a Varimax rotation.
+ - Perform Maximum Liklihood Factor Analysis with a Varimax rotation.
+ - Compare the solutions from these three factor analyses:
+     + Did each factor analysis yield roughly the same factor loadings?
+     + Is one set of factors more interpretable than the other set?
+ - Evaluate the factor loadings over a range of _common factors_, i.e. instead of just looking at the results for $k = 4$ also consider values for $k$ in ${2,3,4,5,6}$.
+ - If you have enough data, then evaluate your prospective factor loadings through bootstrapping or cross validation. As with any statistical relationship, for that relationship to represent a 'universal truth', then it must exist in many samples. We can effectively construct this ideal situation by employing either of these methods.
+
+This strategy has been adapted from the advice provided in [@johnson1992applied].
 
 \newpage
 

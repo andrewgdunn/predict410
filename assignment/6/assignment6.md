@@ -29,7 +29,7 @@ instead of price because it provides a mechanism of normalization, which allows
 us to have a measurement of all variables in a comparable metric, thus enabling
 evaluation of analytical relationships amongst two or more variables despite
 originating from a price series of unequal values [@quantitivity:logreturns]. We
-wish to use the log- returns of the individual stocks to explain the variation
+wish to use the log-returns of the individual stocks to explain the variation
 in log-returns of the market index (VV). We will explore this concept using both
 linear regression and principal components analysis as a preconditioner for
 linear regression analysis.
