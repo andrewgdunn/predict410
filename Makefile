@@ -7,5 +7,12 @@ study: study.md study.bib Makefile
 	--template=templates/compact.latex \
 	-V geometry:margin=0.7in
 
+final: final.md Makefile
+	pandoc final.md \
+	--output final_dunn.pdf \
+	--smart \
+	--template=templates/compact.latex \
+	-V geometry:margin=0.7in
+
 clean:
 	rm study.pdf

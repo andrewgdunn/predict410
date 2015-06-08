@@ -95,8 +95,6 @@ Notes below are from the following sources; [@bhattiolsassums].
 
  - When formulating a regression model, we want to explain the variation in the response variable by the variation in the predictor variable.
 
-## Statistical Assumptions for OLS Regression
-
 There are two primary assumptions for OLS regression:
 
 1. The regression model can be expressed in the form $$Y = \beta_0 + \beta_1X_1 + \ldots + \beta_kX_k + \epsilon$$ Notice that the model formulation specifies error term $\epsilon$ to be additive, and that the model parameters ($\beta$s) enter the modeling linearly, that is, $\beta_i$ represents the change in $Y$ for a one unit increase in $X_i$ when $X_i$ is a continuous predictor variable. Any statistical model in which the parameters enter the model linearly is referred to as a _linear model_.
@@ -849,21 +847,44 @@ in this course we will also learn about logistic regression models and survival
 regression models, will these methods need their own EDA or is EDA general to
 all statistical models?
 
+Exploratory data analysis (EDA) is an approach to analyzing data sets to
+summarize their main characteristics, often with visual methods [@wiki:eda]. A
+statistical model can be used or not, but primarily EDA is for seeing what the
+data can tell us beyond the formal modeling or hypothesis testing task. There
+are many tools, some simple regression and some more complex, however EDA is
+characterized more by the attitude of the analyst than the particular technique.
+
 __Question__: In the simple linear regression model what is the relationship
-between R-squared and the correlation coefficient rho?
+between R-squared and the correlation coefficient $\rho$?
+
+In the case of simple linear regression with only a single predictor variable
+$R^2 = \rho^2 = CORR(x,y)^2$. But in multiple linear regression with more than
+one predictor the concept of correlation between the predictors and response
+does not extend automatically.
 
 __Question__: How do we interpret a regression coefficient in OLS regression?
 
+The standard interpretation is that the dependent variable value will increase
+by $\beta$ units for each unit increase in the independent variable.
+
 __Question__: Frequently, as a form of EDA for OLS regression we make a
-scatterplot between the response variable Y and a predictor variable X. As an
-assumption of OLS, the response variable Y must be continuous. However, the
-predictor variable X could be continuous or discrete. When the predictor
+scatterplot between the response variable $Y$ and a predictor variable $X$. As
+an assumption of OLS, the response variable $Y$ must be continuous. However, the
+predictor variable $X$ could be continuous or discrete. When the predictor
 variable is discrete, does a scatterplot still make sense? If not, what type of
 visual EDA does make sense? Does the appropriateness of the scatterplot make
 sense if the discrete variable takes on many discrete values (such as the set of
 integers, think of dollar amounts rounded to the nearest dollar) versus only a
 few discrete values(such as a coded categorical variable which only takes the
 values 1, 2, or 3)?
+
+If the predictor variable is discrete, but appears to be continuous (as in
+dollars rounded to the nearest dollar) then a scatterplot would appear similar
+to using a continuous variable. If the data is discrete and a scatterplot
+doesn't provide enough context, it may be useful to consider histogram or pie
+chart. If you're in a situation where the data is discrete, but a histogram
+appears cluttered, you may consider a colored scatterplot, where you use the
+categorical data as a color indicator.
 
 __Question__: The simple linear regression model is a special case of 'Multiple
 Regression' or 'Ordinary Least Squares'(OLS) regression. (We will typically use
@@ -872,23 +893,57 @@ final step of a regression analysis we perform a 'check of model adequacy'. What
 model diagnostics do we use to validate our fitted model against the model
 assumptions of OLS regression?
 
+There are two primary assumptions for OLS regression:
+
+1. The regression model can be expressed in the form $$Y = \beta_0 + \beta_1X_1 + \ldots + \beta_kX_k + \epsilon$$ Notice that the model formulation specifies error term $\epsilon$ to be additive, and that the model parameters ($\beta$s) enter the modeling linearly, that is, $\beta_i$ represents the change in $Y$ for a one unit increase in $X_i$ when $X_i$ is a continuous predictor variable. Any statistical model in which the parameters enter the model linearly is referred to as a _linear model_.
+
+2. The response variable $Y$ is assumed to come from an independent and identically distributed (iid) random sample from a $N(\mathbf{X\beta},\sigma^2)$ distribution where the variance of $\sigma^2$ is a fixed but unkown quantity. The statistical notation for this assumption is $Y ~ N(\mathbf{X\beta},\sigma^2)$.
+
+We use goodness-of-fit criteria R-Square and Adjusted R-Square to check for
+model adequacy.
+
 __Question__: How are the parameters, i.e. the model coefficients, estimated in
 OLS regression? How does this relate to maximum likelihood estimation? How do
 you show the relationship between OLS regression and maximum likelihood
 estimation?
 
+Ordinary Least Squares regression is just a particular instance of Maximum
+Likelihood Estimation. OLS is a distance-minimizing approximation/estimation
+method, while MLE is a 'likelihood' maximization method.
+
+The OLS estimator is consistent when the regressors are exogenous and there is
+no perfect multicollinearity, and optimal in the class of linear unbiased
+estimators when the errors are homoscedastic and serially uncorrelated. Under
+these conditions, the method of OLS provides minimum-variance mean-unbiased
+estimation when the errors have finite variances. Under the additional
+assumption that the errors be normally distributed, OLS is the maximum
+likelihood estimator [@wiki:ols].
+
 __Question__: What is the overall F-test? What is the null hypothesis and what
 is the alternate hypothesis? The overall F-test is also called the 'test for a
 regression effect'. Why is it called this?
+
+Consider the regression model $$Y = \beta_0 + \beta_1X_1 + \ldots + \beta_kX_k$$ The Overall F-Test for a regression effect is a joint hypothesis test that at least one of the predictor variables has a non-zero coefficient.
+
+ - The null and alternate hypotheses are given by $$H_0 : \beta_1 = \ldots = \beta_k = 0 \text{  versus  } H_1 : \beta_i \neq 0$$ for some $i \in {1,\ldots,k}$.
+
+ - The test statistic for the Overall F-test is given by $$F_0 = \frac{\frac{SSR}{k}}{\frac{SSE}{(n-p)}}$$ which has a F-distribution with $(k,n-p)$ degrees-of-freedom for a regression model with $k$ predictor variables and $p$ total parameters. When the regression model includes and intercept, then $p = k + 1$. If the regression model does not include an intercept, then $p = k$.
 
 __Question__: What is the difference between R-squared and adjusted R-squared?
 How is each measure computed, and which measure should we prefer? How does the
 interpretation of R-squared change as we move from the simple linear regression
 model to the multiple regression model?
 
+Adjusted R-square takes into account the number of samples and number of
+parameters within the model. This allows for the Adjusted R-square metric to
+account for model complexity, facilitating the comparison of models that have
+different size.
+
 __Question__: The simple linear regression model $Y = b_0 + b_1*X_1$ has three
 parameters. Two of the parameters are $b_0$ and $b_1$. What is the third
 parameter?
+
+$\epsilon$, the error parameter.
 
 __Question__: What is a sampling distribution? What theoretical distribution do
 the parameter estimates have in OLS regression? What distribution do we use in

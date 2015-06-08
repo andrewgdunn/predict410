@@ -530,3 +530,119 @@ Within SAS, there are several methods to invoke selection criteria for factors,
 
 [^0]: Fabrigar, Leandre R., and Duane T. Wegener. Exploratory factor analysis. Oxford University Press, 2011.
 [^1]: http://www.ats.ucla.edu/stat/sas/library/factor_ut.htm
+
+# Week 8
+
+## Unsupervised Learning
+Cluster analysis falls into the category of statistical problems known as
+“unsupervised learning”. What is an unsupervised learning problem? Have we
+discussed any other methods in this course that could be categorized as methods
+for unsupervised learning?
+
+__Response__:
+
+In machine learning, the problem of unsupervised learning is that of trying to
+find hidden structure in unlabeled data. As the data given to the learner are
+unlabeled, there is no error or reward signal to evaluate potential solutions
+[^0]. In this course we saw other techniques that are considered unsupervised
+learning in both Singular Value Decomposition and Principal Components Analysis.
+
+[^0]: Unsupervised learning. (2015, April 30). In Wikipedia, The Free Encyclopedia. Retrieved 20:43, June 7, 2015, from http://en.wikipedia.org/w/index.php?title=Unsupervised_learning&oldid=660135356
+
+## Selecting the Number of Clusters
+
+When performing a cluster analysis, how should we select the “proper” number of
+clusters to use? Do we have one metric and decision rule to consider, or are
+there several different metrics and decision rules that could be considered?
+What are these different decision rules and their associated metrics? Are there
+any caveats to keep in mind when using these metrics? What options are available
+in SAS to help us make this decision?
+
+There are no completely satisfactory methods that can be used for determining
+the number of population clusters for any type of cluster analysis [^0]. There
+are diagnostic metrics to be considered from clustering. Within SAS the Cubic
+Clustering Criterion and Pseudo F metrics are available. There is some general
+guidelines for interpreting these metrics.
+
+- Cubic Clustering Criterion
+    + Peaks on the plot with the CCC greater than 2 or 3 indicate good clusterings.
+    + Peaks with the CCC between 0 and 2 indicate possible clusters but should be interpreted cautiously.
+    + There may be several peaks if the data has a hierarchical structure.
+    + Very distinct non-hierarchical spherical clusters usually show a sharp rise before the peak followed by a gradual decline.
+    + Very distinct non-hierarchical elliptical clusters often show a sharp rise to the correct number of clusters followed by a further gradual increase and eventually a gradual decline.
+    + If all values of the CCC are negative and decreasing for two or more clusters, the distribution is probably unimodal or long-tailed.
+    + Very negative values of the CCC, say, -30, may be due to outliers. Outliers generally should be removed before clustering.
+- Pseudo F
+    + Look for a relatively large value.
+
+[^0]: Hartigan, J. A. (1985). Statistical theory in clustering. Journal of classification, 2(1), 63-76.
+
+## Cluster Analysis at Work
+Do you use any cluster analysis at work? How are you using cluster analysis?
+
+__Response__:
+
+Primarily work as a reimbursable organization. We use some simple clustering
+visualizations (read -- already labeled) to consider balance of income from
+various sources. Would be interesting to ignore the provided labels and see if
+there are any observable trends as to where our customers are making their
+investments in the respective skills/services of the group. We may/likely notice
+that there are relationships between our customers strategic direction that
+we're not immediately aware of.
+
+# Week 9
+
+## Factor Analysis versus Principal Components Analysis
+Are Factor Analysis and Principal Component Analysis the same “thing”? How are
+Factor Analysis and Principal Components Analysis similar? How are they
+different? Are there situations where one method should be preferred over the
+other method? Explain.
+
+__Reponse__:
+
+Principal Component Analysis involves extracting linear composites of observed
+variables. Factor Analysis is based on a formal model predicting observed
+variables from theoretical latent factors. These methods are distinct, however
+they commonly produce similar results. PCA is actually used as the default
+extraction method in many statistical packages for factor analysis routines.
+
+In PCA, the components are orthogonal linear combinations that maximize the
+total variance. In FA, the factors are linear combinations that maximize the
+shared portion of the variance. FA is dependent on the optimization routine used
+and the initial conditions of the optimization.
+
+http://stats.stackexchange.com/questions/1576/what-are-the-differences-between-factor-analysis-and-principal-component-analysi
+
+## Why do we segment populations?
+In the context of predictive modeling why do we segment (or stratify)
+populations? How should we construct these segments? Should segments be
+constructed from an application point of view or a purely statistical point of
+view? Give examples of why we would segment and how we should segment.
+
+__Response__:
+
+It is sometimes advantageous to segment population and sample each sub-
+population independently. Stratification is the process of dividing members of
+the population into homogeneous subgroups before sampling. Once the stratum set
+is constructed simple random sampling or systematic sampling is applied within
+each stratum.
+
+An example of when this technique is advantageous is with population density. If
+implementing a survey across a region that has differing population density,
+dividing into stratum would allow the survey implementation to tune the sampling
+frequency.
+
+## Statistical Inference versus Predictive Modeling
+
+Throughout this course, we have talked about the differences between building
+models for statistical inference versus building models for predictive modeling.
+Predictive modeling has not always been part of the Statistics community. One
+person who is very responsible for bridging the gap between the Computer Science
+community and the Statistics community is Leo Breiman (the Father of CART and
+Random Forest). In his article "Statistical Modeling: The Two Cultures", we can
+read his views on the subject and better understand the difference between the
+modern Statistics community and the Machine Learning Community. Do we understand
+the difference between statistical modeling and machine learning? Let’s read and
+discuss.
+
+__Response__:
