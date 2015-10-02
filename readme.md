@@ -13,10 +13,23 @@ Artifacts from completing Northwestern University Predict 410
 I'm sharing artifacts from my completion of the course with the intent that
 someone may benefit from the approach taken. I'm sharing everything that I think
 is reasonable without treading on the publishers of reference texts, and the
-university. I'd ask that if you've come upon this repository and use it for
-reference, please contact me and let me know what helped you. Alternatively, if
-you've found this and believe I'm in violation for sharing the material, please
-contact me first rather than issue a take-down.
+academic institution. I'd ask that if you've come upon this repository and use
+it for reference, please contact me and let me know what helped you.
+Alternatively, if you've found this and believe I'm in violation for sharing the
+material, please contact me first rather than issue a take-down.
+
+I've deliberately included the data along with the source code so that the work
+can be reproduced, however I've also omitted the course instruction as it is
+likely to cause a claim from the institution. It is also likely that the course
+will significantly change as time goes on, so the value of this reference is
+limited. However, I've personally found references from decades prior while
+working on this course, and felt that if I could benefit anyone I should share.
+
+The overall caveat is that I'm just a student. Typically out of time, and under
+duress to complete this course material. I don't posit that this is a correct
+reference, rather, I know there are significant shortcomings. Read everything as
+a skeptic, and think critically rather than directly re-use something that I
+have done.
 
 Northwestern's [Predictive Analytics](http://sps.northwestern.edu/program-
 areas/graduate/predictive-analytics/) program was the first that I found to
