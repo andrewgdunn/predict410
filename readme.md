@@ -10,23 +10,26 @@ Artifacts from completing Northwestern University Predict 410
     statistical graphics, linear regression, automated variable selection, principal
     components analysis, exploratory factor analysis, and cluster analysis.
 
-I'm sharing with the intent that someone else may benefit from finding the work
-from this course. Be it from the formatting or coding this course requires. I
-want to make it a practice to openly share the work that goes into achieving
-this degree program, despite the potentially embarrassing reality that someone
-may read work that was completed under duress at the last minute.
+I'm sharing artifacts from my completion of the course with the intent that
+someone may benefit from the approach taken. I'm sharing everything that I think
+is reasonable without treading on the publishers of reference texts, and the
+university. I'd ask that if you've come upon this repository and use it for
+reference, please contact me and let me know what helped you. Alternatively, if
+you've found this and believe I'm in violation for sharing the material, please
+contact me first rather than issue a take-down.
 
-Northwestern's distance program was one of the first to make available a set of
-curriculum that was vectored toward gaining the knowledge for becoming a
-practitioner of data science. I'm excited to participate in this program and
-hope the university doesn't frown on me openly sharing limited excerpts from
-their prepared material and fully the work I prepared for the course.
+Northwestern's [Predictive Analytics](http://sps.northwestern.edu/program-
+areas/graduate/predictive-analytics/) program was the first that I found to
+provide full degree accreditation from a completely on-line program with
+curriculum vectoring towards becoming a practitioner of Data Science. I'm
+excited to participate in the program and hope that the university doesn't take
+offense in me sharing this coursework.
 
-I would like very much to see higher education adopt a more open form of
-education, much like what we're seeing from the massively open on-line courses
-recently.
-
-Please feel free to contact me about the work within this repository, course,
-and personal experience with Northwestern's Predicive Analytics degree program.
+I would like to see higher education adopt a more open form of education, much
+like what we're seeing in the massively on-line open courses of late. I further
+would like to see institutions choose to use libre/open technology in their
+curriculum, as these tools are forms of expression that become unavailable to
+students after separation with the institution. Where possible I've tried to use
+or reproduce work in libre/open form, however time is always limited.
 
 andrew.g.dunn@u.northwestern.edu
